@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Overview
+This project uses the Payload Website Template, integrating Payload CMS with Next.js. It includes collections for Users, Posts, Pages, Media, and Categories, and globals for Header and Footer. The front-end is built with Next.js App Router and TypeScript.
+
+# Coding Standards
+- Prefer functional components with hooks over class components.
+- Use TypeScript to ensure type safety.
+- Adhere to the Airbnb style guide for code consistency.
+- Name variables and functions in camelCase, and components in PascalCase.
+
+# Payload CMS Guidelines
+- Define access control for each collection and global to manage permissions effectively.
+- Utilize the layout builder blocks such as Hero, Content, Media, Call To Action, and Archive for structuring pages and posts.
+- Manage draft and published states using Payload's versioning features.
+- Implement SEO best practices using the Payload SEO Plugin.
+- Enable search functionality with the Payload Search Plugin.
+- Handle URL redirects using the Payload Redirects Plugin.
+
+# Data Fetching
+- In server components, obtain a Payload instance using `getPayload` and fetch data with methods like `find` and `findByID`.
+- When necessary, set `overrideAccess` to `false` and pass the `user` object to respect access control.
+- Follow the data fetching patterns established in existing pages to maintain consistency.
+
+# TypeScript Integration
+- After modifying the Payload configuration, generate TypeScript types using `pnpm payload generate:types`.
+- Use the generated types to ensure type safety when working with data from Payload.
+
+# Common Pitfalls to Avoid
+- Double-check the configuration of collections and globals to prevent errors in data structure or access control.
+- Ensure proper handling of draft and published content based on user permissions to avoid unauthorized access.
+- Fill in all necessary SEO fields to optimize search engine visibility.
+- Implement error handling in data fetching operations to manage failures gracefully.
+- If using static site generation (SSG), remember to revalidate pages after content changes to keep the content up-to-date.
+
+
+
+IF needed refer to [README.md](mdc:README.md) or Payload Docs
+
+
+

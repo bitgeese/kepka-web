@@ -17,6 +17,50 @@ export const Header: GlobalConfig = {
           appearances: false,
         }),
       ],
+      defaultValue: [
+        {
+          link: {
+            type: 'custom',
+            label: 'HOME',
+            url: '/'
+          }
+        },
+        {
+          link: {
+            type: 'custom',
+            label: 'PORTFOLIO',
+            url: '/portfolio'
+          }
+        },
+        {
+          link: {
+            type: 'custom',
+            label: 'COLLECTIONS',
+            url: '/collections'
+          }
+        },
+        {
+          link: {
+            type: 'custom',
+            label: 'EXHIBITIONS',
+            url: '/exhibitions'
+          }
+        },
+        {
+          link: {
+            type: 'custom',
+            label: 'ABOUT',
+            url: '/about'
+          }
+        },
+        {
+          link: {
+            type: 'custom',
+            label: 'CONTACT',
+            url: '/contact'
+          }
+        }
+      ],
       maxRows: 6,
       admin: {
         initCollapsed: true,

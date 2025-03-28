@@ -10,63 +10,40 @@ const BeforeDashboard: React.FC = () => {
   return (
     <div className={baseClass}>
       <Banner className={`${baseClass}__banner`} type="success">
-        <h4>Welcome to your dashboard!</h4>
+        <h4>Welcome to your portfolio dashboard</h4>
       </Banner>
-      Here&apos;s what to do next:
+      <div className="p-4 bg-black text-white rounded-md mb-4">
+        <h3 className="text-xl mb-2 font-medium">KĘPKA | Artist & Fashion Designer</h3>
+        <p className="text-sm text-gray-300 mb-3">Here's how to get started with your portfolio:</p>
+      </div>
+      
       <ul className={`${baseClass}__instructions`}>
         <li>
-          <SeedButton />
-          {' with a few pages, posts, and projects to jump-start your new site, then '}
-          <a href="/" target="_blank">
-            visit your website
-          </a>
-          {' to see the results.'}
+          {'Upload your artwork and fashion designs in the '}
+          <strong>Media</strong>
+          {' collection, organizing them by collections or series.'}
         </li>
         <li>
-          If you created this repo using Payload Cloud, head over to GitHub and clone it to your
-          local machine. It will be under the <i>GitHub Scope</i> that you selected when creating
-          this project.
+          {'Create exhibition pages and portfolio showcase pages using the '}
+          <strong>Pages</strong>
+          {' collection with the layout builder.'}
         </li>
         <li>
-          {'Modify your '}
-          <a
-            href="https://payloadcms.com/docs/configuration/collections"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            collections
-          </a>
-          {' and add more '}
-          <a
-            href="https://payloadcms.com/docs/fields/overview"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            fields
-          </a>
-          {' as needed. If you are new to Payload, we also recommend you check out the '}
-          <a
-            href="https://payloadcms.com/docs/getting-started/what-is-payload"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Getting Started
-          </a>
-          {' docs.'}
+          {'Share news about your exhibitions and fashion collections through the '}
+          <strong>Posts</strong>
+          {' collection.'}
         </li>
         <li>
-          Commit and push your changes to the repository to trigger a redeployment of your project.
+          {'Customize your site navigation and footer in the '}
+          <strong>Globals</strong>
+          {' section.'}
         </li>
       </ul>
-      {'Pro Tip: This block is a '}
-      <a
-        href="https://payloadcms.com/docs/admin/custom-components/overview#base-component-overrides"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        custom component
-      </a>
-      , you can remove it at any time by updating your <strong>payload.config</strong>.
+      <div className="mt-4 text-sm text-gray-600 p-3 border border-gray-200 rounded">
+        <p>
+          <strong className="text-red-600">Artist's Note:</strong> This dashboard is fully customizable to match your unique artistic vision. You can modify any aspect of the site through the content collections.
+        </p>
+      </div>
     </div>
   )
 }

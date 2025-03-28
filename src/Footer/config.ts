@@ -17,6 +17,29 @@ export const Footer: GlobalConfig = {
           appearances: false,
         }),
       ],
+      defaultValue: [
+        {
+          link: {
+            type: 'custom',
+            label: 'INSTAGRAM',
+            url: 'https://instagram.com'
+          }
+        },
+        {
+          link: {
+            type: 'custom',
+            label: 'TWITTER',
+            url: 'https://twitter.com'
+          }
+        },
+        {
+          link: {
+            type: 'custom',
+            label: 'LINKEDIN',
+            url: 'https://linkedin.com'
+          }
+        }
+      ],
       maxRows: 6,
       admin: {
         initCollapsed: true,
@@ -25,6 +48,14 @@ export const Footer: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'copyright',
+      type: 'text',
+      defaultValue: '© Jakub Kępka. All rights reserved.',
+      admin: {
+        position: 'sidebar',
+      }
+    }
   ],
   hooks: {
     afterChange: [revalidateFooter],

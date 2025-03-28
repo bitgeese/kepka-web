@@ -14,73 +14,74 @@
   }
 
   :root {
+    /* Light theme - keeping for reference but we'll default to dark */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 0%;
 
     --card: 240 5% 96%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 0%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 0%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: 0 0% 0%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 100% 50%;  /* Bold red accent */
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 240 6% 80%;
+    --border: 0 0% 15%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 0 0% 0%;
 
     --radius: 0.2rem;
 
     --success: 196 52% 74%;
     --warning: 34 89% 85%;
-    --error: 10 100% 86%;
+    --error: 0 100% 50%;  /* Bold red for errors */
   }
 
   [data-theme='dark'] {
-    --background: 0 0% 0%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 0%;  /* Pure black background */
+    --foreground: 0 0% 100%;  /* Pure white text */
 
-    --card: 0 0% 4%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 5%;  /* Almost black card backgrounds */
+    --card-foreground: 0 0% 100%;  /* White text on cards */
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 5%;  /* Almost black popovers */
+    --popover-foreground: 0 0% 100%;  /* White text on popovers */
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 0% 100%;  /* White primary color */
+    --primary-foreground: 0 0% 0%;  /* Black text on primary elements */
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 15%;  /* Very dark gray secondary */
+    --secondary-foreground: 0 0% 100%;  /* White text on secondary */
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 15%;  /* Very dark gray muted areas */
+    --muted-foreground: 0 0% 70%;  /* Light gray text in muted areas */
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 100% 50%;  /* Bold red accent color */
+    --accent-foreground: 0 0% 100%;  /* White text on accent */
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 100% 40%;  /* Darker red for destructive actions */
+    --destructive-foreground: 0 0% 100%;  /* White text on destructive */
 
-    --border: 0, 0%, 15%, 0.8;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 0 0% 15%;  /* Very dark gray borders */
+    --input: 0 0% 15%;  /* Very dark input backgrounds */
+    --ring: 0 0% 80%;  /* Light gray rings for focus states */
 
-    --success: 196 100% 14%;
-    --warning: 34 51% 25%;
-    --error: 10 39% 43%;
+    --success: 120 100% 30%;  /* Deep green for success */
+    --warning: 40 100% 50%;  /* Orange-yellow for warnings */
+    --error: 0 100% 50%;  /* Bold red for errors */
   }
 }
 
@@ -95,6 +96,11 @@
 
 html {
   opacity: 0;
+}
+
+/* Set dark theme as default */
+html:not([data-theme]) {
+  data-theme: 'dark';
 }
 
 html[data-theme='dark'],
