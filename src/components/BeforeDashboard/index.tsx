@@ -14,7 +14,7 @@ const BeforeDashboard: React.FC = () => {
       </Banner>
       <div className="p-4 bg-black text-white rounded-md mb-4">
         <h3 className="text-xl mb-2 font-medium">KĘPKA | Artist & Fashion Designer</h3>
-        <p className="text-sm text-gray-300 mb-3">Here's how to get started with your portfolio:</p>
+        <p className="text-sm text-gray-300 mb-3">Here&apos;s how to get started with your portfolio:</p>
       </div>
       
       <ul className={`${baseClass}__instructions`}>
@@ -41,7 +41,7 @@ const BeforeDashboard: React.FC = () => {
       </ul>
       <div className="mt-4 text-sm text-gray-600 p-3 border border-gray-200 rounded">
         <p>
-          <strong className="text-red-600">Artist's Note:</strong> This dashboard is fully customizable to match your unique artistic vision. You can modify any aspect of the site through the content collections.
+          <strong className="text-red-600">Artist&apos;s Note:</strong> This dashboard is fully customizable to match your unique artistic vision. You can modify any aspect of the site through the content collections.
         </p>
       </div>
     </div>
