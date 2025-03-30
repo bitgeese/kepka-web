@@ -1,6 +1,10 @@
 ---
 import '../styles/global.css';
-const { content } = Astro.props;
+
+import directus from "../lib/directus";
+import { readSingleton } from "@directus/sdk";
+
+const site = await directus.request(readSingleton("kepka"));
 ---
 
 <html lang="en">
@@ -8,7 +12,7 @@ const { content } = Astro.props;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{content.title}</title>
+		<title>{site.title}</title>
 	</head>
 	<body>
 		<slot />
