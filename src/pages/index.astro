@@ -1,8 +1,8 @@
 ---
-import Main from '../layouts/layout.astro';
+import MainLayout from "../layouts/MainLayout.astro";
+import { Y2KHero } from "../components/Y2KHero.jsx";
 ---
 
-
-<Main>
-	hello 
-</Main>
+<MainLayout title="Home">
+	<Y2KHero client:load />
+</MainLayout>

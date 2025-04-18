@@ -1,0 +1,66 @@
+---
+import { ThemeToggle } from "../components/ui/theme-toggle";
+import { ThemeProvider } from "../components/ThemeProvider";
+import ThemeScript from "../components/ThemeScript.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Jakub Kepka - Fashion Designer with Y2K/techno-inspired aesthetic, blending bold design with Polish sensibilities." />
+    <title>{title} | Jakub Kepka</title>
+    <ThemeScript />
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+    <!-- Add font links when available -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Custom cursor styles --> 
+    <style>
+      * {
+        cursor: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='5' stroke='%23FF0030' stroke-width='2'/%3E%3C/svg%3E") 12 12, auto !important;
+      }
+      a, button, [role="button"] {
+        cursor: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='12' cy='12' r='6' fill='%23FF0030'/%3E%3C/svg%3E") 12 12, pointer !important;
+      }
+    </style>
+  </head>
+  <body class="selection:bg-electric-red selection:text-white">
+    <ThemeProvider client:load>
+      <!-- Techno-inspired theme toggle -->
+      <div class="fixed bottom-4 right-4 z-50">
+        <ThemeToggle client:load className="shadow-lg" />
+      </div>
+      
+      <!-- Extremely subtle noise texture -->
+      <div class="fixed inset-0 pointer-events-none bg-noise opacity-[0.005] z-[-1]"></div>
+      
+      <!-- Main content -->
+      <main class="mx-auto relative">
+        <slot />
+      </main>
+      
+      <!-- Minimal footer with sharp dividing line -->
+      <footer class="py-6 px-8 mt-12 border-t border-foreground">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-start md:items-center">
+          <div class="mb-4 md:mb-0">
+            <p class="text-xs uppercase tracking-widest">© {new Date().getFullYear()} Jakub Kepka</p>
+          </div>
+          <div class="flex gap-6">
+            <a href="/privacy" class="text-xs uppercase tracking-widest hover:text-electric-red transition-colors">Privacy</a>
+            <a href="/press" class="text-xs uppercase tracking-widest hover:text-electric-red transition-colors">Press</a>
+            <a href="/contact" class="text-xs uppercase tracking-widest hover:text-electric-red transition-colors">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </ThemeProvider>
+  </body>
+</html> 

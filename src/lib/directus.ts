@@ -21,10 +21,19 @@ type Artwork = {
   slug: string;
 }
 
+type Photoshoot = {
+    images: string[];
+    title: string;
+    description: string;
+    date_created: string
+    slug: string;
+  }
+
 type Schema = {
   kepka_artworks: Artwork[];
   kepka: Kepka;
   kepka_pages: Page[];
+  kepka_shoots: Photoshoot[];
 }
 
 const directus = createDirectus<Schema>('https://cms.fram.dev').with(rest());
