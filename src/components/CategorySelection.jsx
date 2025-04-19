@@ -1,0 +1,84 @@
+import React, { useEffect } from 'react';
+import { CloudinaryImage } from './ui/CloudinaryImage';
+
+export function CategorySelection({ kepkaData }) {
+  // Debug in development to see the structure of the data
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('CategorySelection kepkaData:', kepkaData);
+      console.log('Photoshoot cover:', kepkaData?.photoshoots_cover);
+      console.log('Paintings cover:', kepkaData?.paintings_cover);
+      console.log('Products cover:', kepkaData?.products_cover);
+    }
+  }, [kepkaData]);
+
+  // Define the categories with their properties
+  const categories = [
+    {
+      title: "PHOTOSHOOTS",
+      image: kepkaData?.photoshoots_cover || '',
+      href: "/photoshoots",
+    },
+    {
+      title: "ARTWORKS",
+      image: kepkaData?.paintings_cover || '',
+      href: "/artworks",
+    },
+    {
+      title: "SHOP",
+      image: kepkaData?.products_cover || '',
+      href: "/shop",
+    }
+  ];
+
+  return (
+    <section className="py-24 relative">
+      {/* Subtle top divider */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-foreground opacity-10"></div>
+      
+      <div className="container mx-auto px-6 lg:px-16">
+        <header className="mb-16">
+          <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tighter mb-4">Explore Categories</h2>
+        </header>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
+          {categories.map((category, index) => (
+            <a 
+              key={index} 
+              href={category.href}
+              className="group relative overflow-hidden"
+            >
+              <div className="relative w-full aspect-[3/4] overflow-hidden border-2 border-transparent group-hover:border-electric-red transition-all duration-500">
+                {category.image ? (
+                  <div className="w-full h-full">
+                    <img 
+                      src={category.image}
+                      alt={category.title}
+                      className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                    />
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center w-full h-full bg-muted">
+                    <span className="text-muted-foreground">No image available</span>
+                  </div>
+                )}
+                
+                {/* Simple background for text that works on all images */}
+                <div className="absolute left-0 top-0 p-4 z-10">
+                  <span className="inline-block bg-black bg-opacity-50 px-3 py-1">
+                    <h3 className="text-3xl font-bold font-display tracking-tight text-white">
+                      {category.title}
+                    </h3>
+                  </span>
+                </div>
+                
+                {/* Digital noise overlay */}
+                <div className="absolute inset-0 bg-noise opacity-5 pointer-events-none"></div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+} 

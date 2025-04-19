@@ -1,0 +1,278 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { CloudinaryImage } from '../../components/ui/CloudinaryImage';
+import { Lightbox } from '../../components/ui/Lightbox';
+import { fetchProducts, fetchProductBySlug, getAssetUrl } from '../../lib/directus';
+
+// The Product type
+interface Product {
+  id?: string;
+  slug: string;
+  title?: string;
+  name?: string;
+  description: string;
+  price: string;
+  buy_link: string;
+  sizes?: string[] | string;
+  date_created: string;
+  quantity: number;
+  material: string;
+  images: Array<string | { directus_files_id: string }>;
+  photoshoots?: any[]; // Added photoshoots relationship
+}
+
+export async function getStaticPaths() {
+  // Fetch products for static path generation
+  const products = await fetchProducts(100);
+  
+  // Return products slugs for path generation
+  return products.map((product: any) => ({
+    params: { slug: product.slug },
+  }));
+}
+
+// Get the slug from params
+const { slug } = Astro.params;
+
+// Fetch the product with full photoshoot data using our enhanced function
+const product = await fetchProductBySlug(slug as string);
+
+// Get the product title from either title or name field
+const productTitle = product?.title || product?.name || 'Product not found';
+
+// Format the price
+const formattedPrice = product?.price 
+  ? new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'PLN',
+    }).format(Number(product.price))
+  : '';
+
+// Convert image IDs to full URLs for the lightbox using our helper function
+const imageUrls = product?.images 
+  ? product.images.map((image: any) => getAssetUrl(image))
+  : [];
+
+// Parse sizes list from string to array if it's not already an array
+const productSizes = product?.sizes 
+  ? (Array.isArray(product.sizes) ? product.sizes : String(product.sizes).split(',').map((size: string) => size.trim()))
+  : [];
+
+// Format sizes as a readable string for display
+const sizesString = productSizes.length > 0 ? productSizes.join(', ') : '';
+
+// Check if product is out of stock
+const isOutOfStock = product?.quantity === 0;
+
+// Check if product has photoshoots
+const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
+---
+
+<MainLayout title={productTitle}>
+  <main class="bg-white dark:bg-black py-12">
+    <div class="container mx-auto px-6 lg:px-16">
+      {product ? (
+        <div>
+          <div class="mb-12">
+            <h1 class="text-3xl md:text-4xl font-display font-bold tracking-tighter mb-4">
+              {productTitle}
+            </h1>
+            <a 
+              href="/shop" 
+              class="inline-flex items-center gap-2 text-sm hover:text-electric-red transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+              </svg>
+              Back to all products
+            </a>
+          </div>
+
+          <div class="flex flex-col lg:flex-row gap-12">
+            {/* Product images gallery */}
+            <div class="lg:w-3/5">
+              {/* Main product image */}
+              {product.images && product.images.length > 0 && (
+                <div 
+                  id="main-image-container"
+                  class="overflow-hidden cursor-pointer mb-6" 
+                  onclick="window.openLightbox(0)"
+                >
+                  <CloudinaryImage 
+                    publicId={getAssetUrl(product.images[0])} 
+                    alt={productTitle}
+                    className="w-full h-auto object-contain max-h-[70vh]"
+                    grayscale={false}
+                    crop="fill"
+                    gravity="auto"
+                    fallback={getAssetUrl(product.images[0])}
+                    client:load
+                  />
+                </div>
+              )}
+              
+              {/* Thumbnail gallery */}
+              {product.images && product.images.length > 1 && (
+                <div class="grid grid-cols-4 gap-3" id="thumbnail-gallery">
+                  {product.images.map((image: any, index: number) => (
+                    <div 
+                      class="overflow-hidden cursor-pointer border-2 border-transparent hover:border-electric-red transition-all duration-300"
+                      data-index={index}
+                    >
+                      <CloudinaryImage 
+                        publicId={getAssetUrl(image)} 
+                        alt={`${productTitle} - Image ${index + 1}`}
+                        className="w-full h-full object-cover aspect-square"
+                        grayscale={false}
+                        crop="fill"
+                        gravity="auto"
+                        fallback={getAssetUrl(image)}
+                        client:load
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            {/* Product information */}
+            <div class="lg:w-2/5">
+              <div class="sticky top-8">
+                <div class="text-2xl font-medium mb-6">{formattedPrice}</div>
+                
+                {/* Material info */}
+                {product.material && (
+                  <div class="mb-4">
+                    <span class="text-sm text-muted-foreground">Material: {product.material}</span>
+                  </div>
+                )}
+                
+                {/* Sizes as a simple string */}
+                {sizesString && (
+                  <div class="mb-4">
+                    <span class="text-sm text-muted-foreground">Sizes: {sizesString}</span>
+                  </div>
+                )}
+                
+                {/* Availability status */}
+                {isOutOfStock ? (
+                  <div class="mb-4 text-electric-red font-medium">Out of Stock</div>
+                ) : (
+                  <div class="mb-4 text-green-600 dark:text-green-400 font-medium">In Stock</div>
+                )}
+                
+                {/* Buy now button */}
+                <a 
+                  href={product.buy_link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class={`inline-block w-full py-4 px-6 bg-black dark:bg-white text-white dark:text-black font-bold text-center transition-colors hover:bg-electric-red dark:hover:bg-electric-red hover:text-white uppercase ${isOutOfStock ? 'opacity-50 pointer-events-none cursor-not-allowed' : ''}`}
+                  aria-disabled={isOutOfStock}
+                >
+                  {isOutOfStock ? 'Out of Stock' : 'Buy Now'}
+                </a>
+                
+                {/* Product description */}
+                {product.description && (
+                  <div class="mt-8 prose dark:prose-invert max-w-none border-t pt-8">
+                    <h2 class="text-xl font-bold mb-4">Description</h2>
+                    <div set:html={product.description} />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          {/* Fashion Shows / Photoshoots section */}
+          {hasPhotoshoots && (
+            <div class="mt-16 pt-12 border-t border-gray-200 dark:border-gray-800">
+              <h2 class="text-2xl md:text-3xl font-display font-bold tracking-tighter mb-8">
+                As Seen In These Shows
+              </h2>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {product.photoshoots.map((photoshoot: any) => (
+                  <a href={`/photoshoots/${photoshoot.slug}`} class="group">
+                    <div class="overflow-hidden mb-4 aspect-video">
+                      {photoshoot.images && photoshoot.images.length > 0 && (
+                        <CloudinaryImage 
+                          publicId={getAssetUrl(photoshoot.images[0])} 
+                          alt={photoshoot.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          grayscale={false}
+                          crop="fill"
+                          gravity="auto"
+                          fallback={getAssetUrl(photoshoot.images[0])}
+                          client:load
+                        />
+                      )}
+                    </div>
+                    <h3 class="text-xl font-medium mb-2">{photoshoot.title}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                      {new Date(photoshoot.date_created).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long'
+                      })}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div class="py-20 text-center">
+          <h1 class="text-2xl font-bold mb-4">Product not found</h1>
+          <p class="mb-8">The product you're looking for doesn't exist or has been removed.</p>
+          <a href="/shop" class="inline-block py-2 px-4 bg-black dark:bg-white text-white dark:text-black font-medium">
+            Return to Shop
+          </a>
+        </div>
+      )}
+    </div>
+  </main>
+
+  {/* Lightbox component */}
+  <Lightbox images={imageUrls} client:load />
+</MainLayout>
+
+<script>
+  // Handle thumbnail click to change main image
+  document.addEventListener('DOMContentLoaded', () => {
+    const thumbnails = document.querySelectorAll('#thumbnail-gallery > div');
+    const mainImageContainer = document.getElementById('main-image-container');
+    const mainImage = mainImageContainer?.querySelector('img');
+    
+    // Store the image URLs for easy access
+    const imageUrls: string[] = []; 
+    thumbnails.forEach((thumbnail, index) => {
+      const img = thumbnail.querySelector('img');
+      if (img && img.src) {
+        imageUrls[index] = img.src;
+      }
+      
+      // Add click event to change the main image
+      thumbnail.addEventListener('click', (e) => {
+        e.preventDefault();
+        const index = Number(thumbnail.getAttribute('data-index') || 0);
+        
+        if (mainImage && imageUrls[index]) {
+          mainImage.src = imageUrls[index];
+          
+          // Update the onclick attribute for the lightbox
+          if (mainImageContainer) {
+            mainImageContainer.setAttribute('onclick', `window.openLightbox(${index})`);
+          }
+          
+          // Highlight the selected thumbnail
+          thumbnails.forEach(t => t.classList.remove('border-electric-red'));
+          thumbnail.classList.add('border-electric-red');
+        }
+      });
+    });
+    
+    // Set the first thumbnail as active by default
+    if (thumbnails.length > 0) {
+      thumbnails[0].classList.add('border-electric-red');
+    }
+  });
+</script> 

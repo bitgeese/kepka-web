@@ -42,19 +42,6 @@ const currentPath = Astro.url.pathname;
         <ThemeToggle client:load className="shadow-lg" />
       </div>
       
-      <!-- Back to home button -->
-      {currentPath !== "/" && (
-        <div class="fixed top-4 left-4 z-50">
-          <a 
-            href="/" 
-            class="home-button flex items-center justify-center h-10 px-4 bg-background dark:bg-black border-2 border-electric-red hover:bg-electric-red hover:text-white transition-all duration-300"
-            aria-label="Back to home page"
-          >
-            <span class="font-display font-bold tracking-tight text-xs uppercase">HOME</span>
-          </a>
-        </div>
-      )}
-      
       <!-- Extremely subtle noise texture -->
       <div class="fixed inset-0 pointer-events-none bg-noise opacity-[0.005] z-[-1]"></div>
       
@@ -66,27 +53,5 @@ const currentPath = Astro.url.pathname;
       <!-- Footer component -->
       <Footer />
     </ThemeProvider>
-    
-    <style>
-      .home-button {
-        box-shadow: 0 2px 0 0 var(--electric-red);
-        opacity: 0.95;
-        letter-spacing: 0.05em;
-        transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      }
-      
-      .home-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 0 0 var(--electric-red);
-      }
-      
-      @media (max-width: 640px) {
-        .home-button {
-          height: 8px;
-          padding: 0 8px;
-          font-size: 0.65rem;
-        }
-      }
-    </style>
   </body>
 </html> 

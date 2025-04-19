@@ -1,47 +1,67 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import { fetchKepka, getAssetUrl } from '../lib/directus';
+import { CloudinaryImage } from '../components/ui/CloudinaryImage';
 
-// Fetch the Kepka data to get bio_image
+// Fetch the Kepka data to get bio_image, contact_email and phone
 const kepkaData = await fetchKepka();
 const bioImageUrl = kepkaData ? getAssetUrl(kepkaData.bio_image) : '';
-const contactEmail = kepkaData?.contact_email || 'contact@jakubkepka.com';
-const contactPhone = kepkaData?.contact_phone || '+48 123 456 789';
+const bioImageId = kepkaData?.bio_image || '';
+const contactEmail = kepkaData?.contact_email || 'hi@kepka.co';
+const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
 ---
 
 <MainLayout title="Contact">
   <div class="container mx-auto px-6 lg:px-16">
     <div class="contact-container">
       <div class="contact-grid">
-        <!-- Left column with dramatic whitespace -->
+        <!-- Left column with contact info -->
         <div class="left-column">
           <h1 class="title">CONTACT</h1>
+          
+          <a 
+            href="/" 
+            class="inline-flex items-center gap-2 text-sm hover:text-electric-red transition-colors mb-8"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back to home
+          </a>
           
           <div class="diagonal-slash"></div>
           
           <div class="contact-details">
             <div class="contact-item">
-              <span class="label">EMAIL</span>
-              <a href={`mailto:${contactEmail}`} class="value hover-effect">{contactEmail}</a>
+              <h2 class="heading">Email</h2>
+              <a href={`mailto:${contactEmail}`} class="link">{contactEmail}</a>
             </div>
             
             <div class="contact-item">
-              <span class="label">PHONE</span>
-              <a href={`tel:${contactPhone.replace(/\s+/g, '')}`} class="value hover-effect">{contactPhone}</a>
+              <h2 class="heading">Phone</h2>
+              <a href={`tel:${phoneNumber}`} class="link">{phoneNumber}</a>
             </div>
             
             <div class="contact-item">
-              <span class="label">STUDIO</span>
-              <span class="value">Warsaw, Poland</span>
+              <h2 class="heading">Studio</h2>
+              <p class="text">London, UK</p>
             </div>
           </div>
         </div>
         
         <!-- Right column with bio image -->
         <div class="right-column">
-          {bioImageUrl && (
+          {bioImageId && (
             <div class="image-container">
-              <img src={bioImageUrl} alt="Jakub Kepka" class="bio-image" />
+              <CloudinaryImage 
+                publicId={bioImageId} 
+                alt="Jakub Kepka" 
+                className="bio-image" 
+                crop="fill"
+                gravity="face"
+                grayscale={true}
+                fallback={bioImageUrl}
+              />
               <div class="scan-lines"></div>
             </div>
           )}

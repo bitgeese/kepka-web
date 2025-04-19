@@ -1,10 +1,12 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
 import { fetchKepka, getAssetUrl } from '../lib/directus';
+import { CloudinaryImage } from '../components/ui/CloudinaryImage';
 
 // Fetch the Kepka data to get description and bio_image
 const kepkaData = await fetchKepka();
 const bioImageUrl = kepkaData ? getAssetUrl(kepkaData.bio_image) : '';
+const bioImageId = kepkaData?.bio_image || '';
 const description = kepkaData?.description || '';
 ---
 
@@ -12,9 +14,19 @@ const description = kepkaData?.description || '';
   <div class="container mx-auto px-6 lg:px-16">
     <div class="about-container">
       <div class="about-grid">
-        <!-- Left column with dramatic whitespace -->
+        <!-- Left column with contact info -->
         <div class="left-column">
           <h1 class="title">ABOUT</h1>
+          
+          <a 
+            href="/" 
+            class="inline-flex items-center gap-2 text-sm hover:text-electric-red transition-colors mb-12"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back to home
+          </a>
           
           <div class="diagonal-slash"></div>
           
@@ -25,9 +37,17 @@ const description = kepkaData?.description || '';
         
         <!-- Right column with bio image -->
         <div class="right-column">
-          {bioImageUrl && (
+          {bioImageId && (
             <div class="image-container">
-              <img src={bioImageUrl} alt="Jakub Kepka" class="bio-image" />
+              <CloudinaryImage 
+                publicId={bioImageId} 
+                alt="Jakub Kepka" 
+                className="bio-image" 
+                crop="fill"
+                gravity="face"
+                grayscale={true}
+                fallback={bioImageUrl}
+              />
               <div class="scan-lines"></div>
             </div>
           )}

@@ -64,11 +64,11 @@ export function Y2KHero({ kepkaData }) {
           
           <div className="flex flex-wrap gap-4">
             <a 
-              href="/collections" 
+              href="/shop" 
               className="px-6 sm:px-8 py-3 border-2 font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
               style={{ borderColor: 'var(--foreground)' }}
             >
-              View Collections
+              Shop my Designs
             </a>
             <a 
               href="/about" 

@@ -2,9 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import { CloudinaryImage } from '../../components/ui/CloudinaryImage';
 import { Lightbox } from '../../components/ui/Lightbox';
-import directus from "../../lib/directus";
-import { readItems } from "@directus/sdk";
-import { getAssetUrl } from '../../lib/directus';
+import { fetchPhotoshoots, fetchPhotoshootBySlug, getAssetUrl } from '../../lib/directus';
 
 // The Photoshoot type isn't exported directly, recreate it here
 interface Photoshoot {
@@ -15,27 +13,24 @@ interface Photoshoot {
   date_created: string;
   cover: string | { directus_files_id: string } | null;
   images: Array<string | { directus_files_id: string }>;
+  products?: any[]; // Added products relationship
 }
 
 export async function getStaticPaths() {
-  // Fetch photoshoots directly from Directus
-  const photoshoots = await directus.request(
-    readItems('kepka_shoots', {
-      fields: ['*', 'images.directus_files_id'],
-      sort: ['-date_created'],
-      limit: 100,
-    })
-  );
+  // Fetch all photoshoots for static path generation
+  const photoshoots = await fetchPhotoshoots(100);
   
-  // Map photoshoots to paths and pass the entire photoshoot object as props
+  // Return photoshoot slugs for path generation (we'll fetch full data in the route)
   return photoshoots.map((photoshoot: any) => ({
     params: { slug: photoshoot.slug },
-    props: { photoshoot },
   }));
 }
 
-// Get the photoshoot from props
-const { photoshoot } = Astro.props;
+// Get the slug from params
+const { slug } = Astro.params;
+
+// Fetch the photoshoot with full product data using our enhanced function
+const photoshoot = await fetchPhotoshootBySlug(slug as string);
 
 // Format the date
 const formattedDate = photoshoot ? new Date(photoshoot.date_created).toLocaleDateString('en-US', {
@@ -48,29 +43,29 @@ const formattedDate = photoshoot ? new Date(photoshoot.date_created).toLocaleDat
 const imageUrls = photoshoot?.images 
   ? photoshoot.images.map((image: any) => getAssetUrl(image))
   : [];
+
+// Check if the photoshoot has associated products
+const hasProducts = photoshoot?.products && photoshoot.products.length > 0;
 ---
 
 <MainLayout title={photoshoot?.title || 'Photoshoot'}>
   <main class="bg-white dark:bg-black py-12">
     <div class="container mx-auto px-6 lg:px-16">
-      <div class="mb-8">
-        <a 
-          href="/photoshoots" 
-          class="inline-flex items-center gap-2 font-medium hover:text-electric-red transition-colors mb-8"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-          </svg>
-          Back to All Photoshoots
-        </a>
-      </div>
-
       {photoshoot && (
         <>
           <div class="mb-16">
             <h1 class="text-4xl font-display font-bold tracking-tighter mb-4">
               {photoshoot.title}
             </h1>
+            <a 
+              href="/photoshoots" 
+              class="inline-flex items-center gap-2 text-sm hover:text-electric-red transition-colors mb-4"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+              </svg>
+              Back to all photoshoots
+            </a>
             <time class="text-sm opacity-75 block mb-4" datetime={photoshoot.date_created}>
               {formattedDate}
             </time>
@@ -100,7 +95,61 @@ const imageUrls = photoshoot?.images
               </div>
             ))}
           </div>
+          
+          {/* Products from this fashion show */}
+          {(() => {
+            // Check if the photoshoot has associated products
+            if (!photoshoot?.products || photoshoot.products.length === 0) {
+              return null;
+            }
+            
+            return (
+              <div class="mt-20 pt-12 border-t border-gray-200 dark:border-gray-800">
+                <h2 class="text-2xl md:text-3xl font-display font-bold tracking-tighter mb-8">
+                  Products from this Collection
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {photoshoot.products.map((product: any) => (
+                    <a href={`/shop/${product.slug}`} class="group">
+                      <div class="overflow-hidden mb-4 aspect-square">
+                        {product.images && product.images.length > 0 && (
+                          <CloudinaryImage 
+                            publicId={getAssetUrl(product.images[0])} 
+                            alt={product.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            grayscale={false}
+                            crop="fill"
+                            gravity="auto"
+                            fallback={getAssetUrl(product.images[0])}
+                            client:load
+                          />
+                        )}
+                      </div>
+                      <h3 class="text-lg font-medium mb-2">{product.title}</h3>
+                      <p class="text-base font-medium">
+                        {product.price
+                          ? new Intl.NumberFormat('en-US', {
+                              style: 'currency',
+                              currency: 'PLN',
+                            }).format(Number(product.price))
+                          : ''}
+                      </p>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </>
+      )}
+      {!photoshoot && (
+        <div class="py-20 text-center">
+          <h1 class="text-2xl font-bold mb-4">Photoshoot not found</h1>
+          <p class="mb-8">The photoshoot you're looking for doesn't exist or has been removed.</p>
+          <a href="/photoshoots" class="inline-block py-2 px-4 bg-black dark:bg-white text-white dark:text-black font-medium">
+            Return to Photoshoots
+          </a>
+        </div>
       )}
     </div>
   </main>
