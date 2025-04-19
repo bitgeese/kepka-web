@@ -1,0 +1,127 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { getAssetUrl } from '../../lib/directus';
+import { CloudinaryImage } from '../../components/ui/CloudinaryImage';
+import directus from "../../lib/directus";
+import { readItems } from "@directus/sdk";
+
+// Adding a proper type definition that includes the 'images' property
+interface Artwork {
+  id?: string;
+  title: string;
+  description: string;
+  date_created: string;
+  slug: string;
+  cover: string;
+  images?: string[];
+}
+
+export async function getStaticPaths() {
+  const artworks = await directus.request(
+    readItems('kepka_artworks', {
+      fields: ['*'],
+      sort: ['-date_created'],
+      limit: 100,
+    })
+  );
+  
+  return artworks.map((artwork) => ({
+    params: { slug: artwork.slug },
+    props: { artwork },
+  }));
+}
+
+const { artwork } = Astro.props as { artwork: Artwork };
+
+// Format the date
+const formattedDate = new Date(artwork.date_created).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<MainLayout title={artwork.title}>
+  <main class="bg-white dark:bg-black py-12">
+    <div class="container mx-auto px-6 lg:px-16">
+      <div class="mb-8">
+        <a 
+          href="/artworks" 
+          class="inline-flex items-center gap-2 font-medium hover:text-electric-red transition-colors mb-8"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          Back to All Artworks
+        </a>
+      </div>
+
+      {/* Main artwork display - museum style */}
+      <div class="flex flex-col lg:flex-row gap-12">
+        {/* Artwork image - large and prominent */}
+        <div class="lg:w-3/4 flex justify-center">
+          {artwork.cover && (
+            <div class="max-w-4xl overflow-hidden">
+              <CloudinaryImage 
+                publicId={getAssetUrl(artwork.cover)} 
+                alt={artwork.title}
+                className="w-full h-auto object-contain max-h-[85vh]"
+                grayscale={false}
+                crop="fill"
+                gravity="auto"
+                fallback={getAssetUrl(artwork.cover)}
+                client:load
+              />
+            </div>
+          )}
+        </div>
+        
+        {/* Artwork information - like a museum plaque */}
+        <div class="lg:w-1/4 max-w-md">
+          <div class="sticky top-8">
+            <h1 class="text-3xl font-display font-bold tracking-tighter mb-2">
+              {artwork.title}
+            </h1>
+            <time class="text-sm opacity-75 block mb-4" datetime={artwork.date_created}>
+              {formattedDate}
+            </time>
+            
+            <div class="w-16 h-0.5 bg-electric-red mb-4"></div>
+            
+            {artwork.description && (
+              <div class="prose prose-sm max-w-none mt-4" set:html={artwork.description} />
+            )}
+          </div>
+        </div>
+      </div>
+      
+      {/* Additional artwork images gallery - only shown if images exist */}
+      {artwork.images && Array.isArray(artwork.images) && artwork.images.length > 0 && (
+        <div class="mt-20">
+          <h2 class="text-2xl font-display font-bold tracking-tighter mb-8">Additional Views</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {artwork.images.map((image: string) => (
+              <a 
+                href={getAssetUrl(image)} 
+                class="block overflow-hidden hover:border-electric-red transition-all duration-300"
+                target="_blank"
+                rel="noopener"
+              >
+                <CloudinaryImage 
+                  publicId={getAssetUrl(image)} 
+                  alt={`${artwork.title} - Detail`}
+                  className="w-full h-full object-cover transition-all duration-500"
+                  grayscale={false}
+                  crop="fill"
+                  gravity="auto"
+                  fallback={getAssetUrl(image)}
+                  client:load
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </main>
+</MainLayout>
