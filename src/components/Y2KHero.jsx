@@ -55,7 +55,7 @@ export function Y2KHero({ kepkaData }) {
           <h1 
             className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold tracking-tighter mb-8 leading-none"
           >
-            JAKUB<br />KEPKA
+            JAKUB<br />KĘPKA
           </h1>
           
           
