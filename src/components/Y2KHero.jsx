@@ -4,9 +4,8 @@ import { getAssetUrl } from '../lib/directus';
 
 export function Y2KHero({ kepkaData }) {
   const imageRef = useRef(null);
-  const nameRef = useRef(null);
 
-  // Random glitch effect on the image
+  // Random glitch effect on the image only
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -19,28 +18,13 @@ export function Y2KHero({ kepkaData }) {
       }
     };
 
-    // Text glitch effect
-    const applyTextGlitch = () => {
-      if (nameRef.current) {
-        nameRef.current.classList.add('text-glitch');
-        nameRef.current.setAttribute('data-text', nameRef.current.textContent);
-        setTimeout(() => {
-          nameRef.current?.classList.remove('text-glitch');
-        }, 1500);
-      }
-    };
-
-    // Initial effects with staggered timing
+    // Initial glitch effect
     setTimeout(applyGlitchEffect, 2000);
-    setTimeout(applyTextGlitch, 3000);
 
     // Random glitches
     const interval = setInterval(() => {
       if (Math.random() > 0.8) {
         applyGlitchEffect();
-      }
-      if (Math.random() > 0.9) {
-        applyTextGlitch();
       }
     }, 8000);
 
@@ -72,8 +56,7 @@ export function Y2KHero({ kepkaData }) {
           </div>
 
           <h1 
-            ref={nameRef}
-            className="text-[8rem] leading-[0.85] font-display font-bold tracking-tighter mb-12"
+            className="text-[12rem] leading-[0.85] font-display font-bold tracking-tight mb-12"
           >
             JAKUB<br />KĘPKA
           </h1>
@@ -131,10 +114,9 @@ export function Y2KHero({ kepkaData }) {
           </div>
 
           <h1 
-            ref={nameRef}
-            className="text-[5rem] leading-[0.85] font-display font-bold tracking-tighter mb-8"
+            className="text-[7rem] leading-[0.85] font-display text-center font-bold tracking-tighter mb-8"
           >
-            JAKUB<br />KĘPKA
+            JAKUB KĘPKA
           </h1>
           
           <div className="flex flex-col gap-4 w-full">
