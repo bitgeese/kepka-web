@@ -3,6 +3,23 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Font face declaration for JetBrains Mono */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* Y2K/Techno Inspired Color Palette */
   --background: #FFFFFF;
@@ -140,8 +157,13 @@
     font-family: 'Suisse Int\'l', system-ui, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Eurostile Extended', system-ui, sans-serif;
+    font-family: 'Impact', 'Arial Black', sans-serif;
     @apply font-bold tracking-tighter;
+  }
+  
+  /* Apply monospaced font to buttons, description texts, and navigation */
+  button, .btn, nav, .nav-item, .description, p, a, li {
+    font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
   }
   
   /* Style for text selection - apply to all elements */

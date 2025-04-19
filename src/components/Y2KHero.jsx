@@ -90,10 +90,10 @@ export function Y2KHero({ kepkaData }) {
             className="absolute inset-0 overflow-hidden"
           >
             <CloudinaryImage
-              publicId={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
+              publicId={kepkaData.hero_image} 
               alt={kepkaData?.title || "Jakub Kepka Fashion"}
-              className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-700"
-              grayscale={true}
+              className="w-full h-full object-cover object-top transition-all duration-700"
+              grayscale={false}
               quality={90}
               crop="fill"
               gravity="north"
@@ -108,8 +108,8 @@ export function Y2KHero({ kepkaData }) {
         <CloudinaryImage
           publicId={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
           alt={kepkaData?.title || "Jakub Kepka Fashion"}
-          className="w-full h-full object-cover object-top grayscale"
-          grayscale={true}
+          className="w-full h-full object-cover object-top"
+          grayscale={false}
           quality={85}
           crop="scale"
           gravity="north"
