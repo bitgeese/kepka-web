@@ -3,7 +3,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
 import { getAssetUrl } from "../../lib/directus";
 import { CloudinaryImage } from "../../components/ui/CloudinaryImage";
 import directus from "../../lib/directus";
-import { readItems } from "@directus/sdk";
+import { readItems, readSingleton } from "@directus/sdk";
 
 // Fetch all artworks
 const artworks = await directus.request(
@@ -13,6 +13,13 @@ const artworks = await directus.request(
     limit: 100,
   })
 );
+
+// Fetch Kepka global settings to get paintings_cover
+const kepkaData = await directus.request(
+  readSingleton('kepka')
+);
+
+const paintingsCover = kepkaData.paintings_cover;
 
 // Page title
 const pageTitle = "Artworks | Jakub Kepka";
@@ -42,9 +49,22 @@ const getSizeClass = (index: number) => {
 
 <MainLayout title={pageTitle}>
   <main>
-    <!-- Masthead -->
+    <!-- Masthead with Kepka paintings_cover image -->
     <section class="py-24 bg-black text-white relative overflow-hidden">
-      <div class="container mx-auto px-6 lg:px-16">
+      {paintingsCover && (
+        <div class="absolute inset-0 z-0 opacity-30">
+          <CloudinaryImage
+            publicId={getAssetUrl(paintingsCover)}
+            alt="Artworks Cover"
+            className="w-full h-full object-cover"
+            crop="fill"
+            gravity="auto"
+            fallback={getAssetUrl(paintingsCover)}
+            client:load
+          />
+        </div>
+      )}
+      <div class="container mx-auto px-6 lg:px-16 relative z-10">
         <h1 class="text-6xl md:text-8xl font-display font-bold tracking-tighter mb-4">
           ARTWORKS
         </h1>

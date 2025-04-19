@@ -112,7 +112,7 @@ export function Y2KHero({ kepkaData }) {
       </div>
       
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
+      <div className="absolute bottom-8 left-0 right-0 hidden md:flex justify-center">
         <div className="animate-bounce flex flex-col items-center opacity-80">
           <span className="text-xs uppercase tracking-wider mb-2 font-bold">Scroll</span>
           <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">

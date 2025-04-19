@@ -9,29 +9,73 @@ interface Props {
 }
 
 const { url, title, description, image } = Astro.props;
-const hasManualData = !!(title || description || image);
-
-// Extract domain from URL
-const domain = url ? new URL(url).hostname.replace('www.', '') : '';
 ---
 
-{hasManualData ? (
-  <div class="link-preview">
-    {image && (
-      <div class="link-preview-image-container">
-        <img src={image} alt={title || ''} class="link-preview-image" />
-      </div>
-    )}
-    
-    <div class="link-preview-content">
-      {title && <h3 class="link-preview-title">{title}</h3>}
-      {description && <p class="link-preview-description">{description}</p>}
-      
-      <a href={url} target="_blank" rel="noopener noreferrer" class="link-preview-url">
-        {domain}
-      </a>
-    </div>
-  </div>
-) : (
-  <EmbedLinkPreview id={url} />
-)} 
+<EmbedLinkPreview id={url} />
+
+<style>
+  /* You can customize the appearance of the LinkPreview component using CSS */
+  :global(.link-preview) {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    overflow: hidden;
+    background-color: #FFFFFF !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #000000;
+  }
+  
+  @media (min-width: 768px) {
+    :global(.link-preview) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  :global(.link-preview:hover) {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 0, 48, 0.15);
+    border-color: rgba(255, 0, 48, 0.3);
+  }
+  
+  :global(.link-preview-title) {
+    font-family: 'Eurostile Extended', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    color: #000000 !important;
+  }
+  
+  :global(.link-preview a) {
+    color: #FF0030;
+  }
+  
+  :global(.link-preview a:hover) {
+    opacity: 0.8;
+  }
+  
+  :global(.link-preview-description) {
+    color: #000000 !important;
+  }
+  
+  .dark :global(.link-preview) {
+    background-color: #232323 !important;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .dark :global(.link-preview-title) {
+    color: #FFFFFF !important;
+  }
+  
+  .dark :global(.link-preview-description) {
+    color: #BBBBBB !important;
+  }
+  
+  .dark :global(.link-preview:hover) {
+    box-shadow: 0 10px 20px rgba(255, 0, 48, 0.2);
+  }
+</style> 
