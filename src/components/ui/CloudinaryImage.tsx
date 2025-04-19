@@ -70,7 +70,8 @@ export function CloudinaryImage({
     if (width) transforms.push(`w_${width}`);
     if (height) transforms.push(`h_${height}`);
     if (crop) transforms.push(`c_${crop}`);
-    if (gravity) transforms.push(`g_${gravity}`);
+    // Only add gravity if it's compatible with the crop mode
+    if (gravity && crop !== 'scale') transforms.push(`g_${gravity}`);
     if (grayscale) transforms.push('e_grayscale');
     if (quality) transforms.push(`q_${quality}`);
     
