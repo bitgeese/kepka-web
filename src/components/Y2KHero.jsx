@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { CloudinaryImage } from './ui/CloudinaryImage';
+import { getAssetUrl } from '../lib/directus';
 
 export function Y2KHero({ kepkaData }) {
   const imageRef = useRef(null);
@@ -91,23 +93,32 @@ export function Y2KHero({ kepkaData }) {
             ref={imageRef}
             className="absolute inset-0 overflow-hidden"
           >
-            <img 
-              src={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
-              alt={kepkaData?.title || "Jakub Kepka Fashion"} 
+            <CloudinaryImage
+              publicId={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
+              alt={kepkaData?.title || "Jakub Kepka Fashion"}
               className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700"
-              style={{ filter: 'contrast(1.2) brightness(1.05)' }}
+              grayscale={true}
+              quality={90}
+              crop="fill"
+              gravity="auto"
+              client:load
             />
           </div>
         </div>
       </div>
 
-      {/* Mobile image */}
+      {/* Mobile image - optimized to prevent top from being cut off */}
       <div className="relative md:hidden mt-8 h-[50vh] sm:h-[60vh] w-full">
-        <img 
-          src={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
-          alt={kepkaData?.title || "Jakub Kepka Fashion"} 
-          className="w-full h-full object-cover object-center grayscale"
-          style={{ filter: 'contrast(1.2) brightness(1.05)' }}
+        <CloudinaryImage
+          publicId={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
+          alt={kepkaData?.title || "Jakub Kepka Fashion"}
+          className="w-full h-full object-cover object-top grayscale"
+          grayscale={true}
+          quality={85}
+          crop="scale"
+          gravity="north"
+          width={640}
+          client:load
         />
       </div>
       
