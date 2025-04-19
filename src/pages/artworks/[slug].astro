@@ -5,6 +5,7 @@ import { CloudinaryImage } from '../../components/ui/CloudinaryImage';
 import { Lightbox } from '../../components/ui/Lightbox';
 import directus from "../../lib/directus";
 import { readItems } from "@directus/sdk";
+import { marked } from 'marked';
 
 // Adding a proper type definition that includes the 'images' property
 interface Artwork {
@@ -95,7 +96,7 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
             <div class="w-16 h-0.5 bg-electric-red mb-4"></div>
             
             {artwork.description && (
-              <div class="prose prose-sm max-w-none mt-4" set:html={artwork.description} />
+              <div class="prose prose-sm max-w-none mt-4" set:html={marked.parse(artwork.description)} />
             )}
           </div>
         </div>
