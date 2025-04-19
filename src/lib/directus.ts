@@ -8,6 +8,9 @@ type Kepka = {
   photoshoots_cover_image: string;
   paintings_cover_image: string;
   products_cover_image: string;
+  bio_image: string;
+  contact_email: string;
+  contact_phone: string;
 }
 
 type Page = {

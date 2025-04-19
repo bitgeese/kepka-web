@@ -20,7 +20,7 @@ const groupedLinks = links.reduce((acc, link) => {
 const sortedTypes = Object.keys(groupedLinks).sort();
 ---
 
-<MainLayout title=Press">
+<MainLayout title="Press">
   <main class="bg-background py-12">
     <div class="container mx-auto px-6 lg:px-16">
       <h1 class="text-6xl font-display font-bold tracking-tighter mb-12 text-foreground uppercase">
@@ -35,7 +35,7 @@ const sortedTypes = Object.keys(groupedLinks).sort();
         sortedTypes.map((type, typeIndex) => (
           <section class="mb-32" style={`margin-left: ${typeIndex % 2 ? '0' : '5%'}`}>
             <h2 class="text-3xl font-display font-bold tracking-tight mb-8 text-foreground uppercase">
-              {type}s
+              {type}
             </h2>
             
             <div class="space-y-20">
