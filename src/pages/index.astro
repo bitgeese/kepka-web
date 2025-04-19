@@ -2,14 +2,25 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import { Y2KHero } from "../components/Y2KHero.jsx";
 import { LatestPhotoshoots } from "../components/LatestPhotoshoots.jsx";
-import { fetchPhotoshoots } from "../lib/directus";
+import { fetchPhotoshoots, fetchKepka, getAssetUrl } from "../lib/directus";
 
 // Fetch the latest photoshoots with our helper function
 const photoshoots = await fetchPhotoshoots(6);
 
+// Fetch Kepka singleton data
+const kepkaData = await fetchKepka();
+
+// Process the hero image URL
+if (kepkaData && kepkaData.hero_image) {
+  kepkaData.hero_image = getAssetUrl(kepkaData.hero_image);
+}
+
+// Get the page title from kepkaData or use a default
+const pageTitle = kepkaData?.title || "Jakub Kepka";
+
 ---
 
-<MainLayout title="Home">
-	<Y2KHero client:load />
+<MainLayout title={pageTitle}>
+	<Y2KHero kepkaData={kepkaData} client:load />
 	<LatestPhotoshoots photoshoots={photoshoots} client:load />
 </MainLayout>

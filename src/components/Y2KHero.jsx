@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-export function Y2KHero() {
+export function Y2KHero({ kepkaData }) {
   const imageRef = useRef(null);
 
   // Random glitch effect on the image only
@@ -9,9 +9,9 @@ export function Y2KHero() {
 
     const applyGlitchEffect = () => {
       if (imageRef.current) {
-        imageRef.current.classList.add('glitch-effect');
+        imageRef.current.classList.add('glitch-effect-grayscale');
         setTimeout(() => {
-          imageRef.current?.classList.remove('glitch-effect');
+          imageRef.current?.classList.remove('glitch-effect-grayscale');
         }, 500);
       }
     };
@@ -56,9 +56,11 @@ export function Y2KHero() {
             JAKUB<br />KEPKA
           </h1>
           
-          <p className="text-base sm:text-lg md:text-xl max-w-md mb-12" style={{ color: 'var(--foreground)', opacity: 0.9 }}>
-            Contemporary fashion designer exploring the intersection of traditional craftsmanship and modern silhouettes.
-          </p>
+          <div 
+            className="text-base sm:text-lg md:text-xl max-w-md mb-12" 
+            style={{ color: 'var(--foreground)', opacity: 0.9 }}
+            dangerouslySetInnerHTML={{ __html: kepkaData?.description || "Contemporary fashion designer exploring the intersection of traditional craftsmanship and modern silhouettes." }}
+          />
           
           <div className="flex flex-wrap gap-4">
             <a 
@@ -90,13 +92,11 @@ export function Y2KHero() {
             className="absolute inset-0 overflow-hidden"
           >
             <img 
-              src="https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg" 
-              alt="Jakub Kepka Fashion" 
+              src={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
+              alt={kepkaData?.title || "Jakub Kepka Fashion"} 
               className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700"
               style={{ filter: 'contrast(1.2) brightness(1.05)' }}
             />
-            {/* Diagonal accent */}
-            <div className="absolute -bottom-24 -left-24 w-[150%] h-48 bg-electric-red transform rotate-12 opacity-60 mix-blend-multiply dark:mix-blend-screen"></div>
           </div>
         </div>
       </div>
@@ -104,13 +104,11 @@ export function Y2KHero() {
       {/* Mobile image */}
       <div className="relative md:hidden mt-8 h-[50vh] sm:h-[60vh] w-full">
         <img 
-          src="https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg" 
-          alt="Jakub Kepka Fashion" 
+          src={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
+          alt={kepkaData?.title || "Jakub Kepka Fashion"} 
           className="w-full h-full object-cover object-center grayscale"
           style={{ filter: 'contrast(1.2) brightness(1.05)' }}
         />
-        {/* Diagonal accent for mobile */}
-        <div className="absolute -bottom-12 -left-12 w-[150%] h-24 bg-electric-red transform rotate-12 opacity-60 mix-blend-multiply dark:mix-blend-screen"></div>
       </div>
       
       {/* Scroll indicator */}

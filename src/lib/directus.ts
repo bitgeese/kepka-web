@@ -1,9 +1,13 @@
-import { createDirectus, rest, readItems } from '@directus/sdk';
+import { createDirectus, rest, readItems, readSingleton } from '@directus/sdk';
 
 // Types
 type Kepka = {
   title: string;
   description: string;
+  hero_image: string;
+  photoshoots_cover_image: string;
+  paintings_cover_image: string;
+  products_cover_image: string;
 }
 
 type Page = {
@@ -130,6 +134,20 @@ export async function fetchPageBySlug(slug: string) {
     return pages[0] || null;
   } catch (error) {
     console.error(`Error fetching page with slug ${slug}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Fetch Kepka singleton data
+ */
+export async function fetchKepka() {
+  try {
+    return await directus.request(
+      readSingleton('kepka')
+    );
+  } catch (error) {
+    console.error('Error fetching Kepka data:', error);
     return null;
   }
 }

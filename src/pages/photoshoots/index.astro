@@ -1,1 +1,118 @@
- 
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import { fetchPhotoshoots, fetchKepka, getAssetUrl } from "../../lib/directus";
+import { CloudinaryImage } from "../../components/ui/CloudinaryImage";
+
+// Fetch all photoshoots
+const photoshoots = await fetchPhotoshoots(100); // Get all photoshoots up to 100
+
+// Fetch Kepka singleton data for the header/cover image
+const kepkaData = await fetchKepka();
+
+// Get the cover image URL
+const coverImageUrl = kepkaData?.photoshoots_cover_image 
+  ? getAssetUrl(kepkaData.photoshoots_cover_image)
+  : null;
+
+// Format function for dates
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long'
+  });
+};
+
+// Page title
+const pageTitle = "Photoshoots | " + (kepkaData?.title || "Jakub Kepka");
+---
+
+<MainLayout title={pageTitle}>
+  <main>
+    <!-- Hero section with cover image -->
+    {coverImageUrl && (
+      <div class="relative h-[50vh] min-h-[400px] overflow-hidden">
+        <img
+          src={coverImageUrl}
+          alt="Photoshoots Cover"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/60 flex items-center">
+          <div class="container mx-auto px-6 lg:px-16">
+            <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tighter mb-6 text-white">
+              PHOTOSHOOTS
+            </h1>
+            <div class="w-24 h-1 bg-electric-red"></div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- If no cover image, show simple header -->
+    {!coverImageUrl && (
+      <div class="container mx-auto px-6 lg:px-16 pt-24 pb-12">
+        <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tighter mb-6">
+          PHOTOSHOOTS
+        </h1>
+        <div class="w-24 h-1 bg-electric-red mb-12"></div>
+      </div>
+    )}
+
+    <!-- Photoshoots grid -->
+    <div class="container mx-auto px-6 lg:px-16 py-16">
+      <!-- If there are no photoshoots -->
+      {photoshoots.length === 0 && (
+        <div class="text-center py-16">
+          <p class="text-xl text-muted-foreground">No photoshoots available at the moment.</p>
+        </div>
+      )}
+
+      <!-- Grid of photoshoots -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        {photoshoots.map((photoshoot) => {
+          // Get first image as thumbnail
+          const thumbnailImage = photoshoot.images?.[0] || null;
+          
+          return (
+            <a 
+              href={`/photoshoots/${photoshoot.slug}`} 
+              class="group block"
+            >
+              <div class="aspect-[3/4] overflow-hidden mb-4 relative">
+                {thumbnailImage ? (
+                  <CloudinaryImage
+                    publicId={thumbnailImage}
+                    alt={photoshoot.title}
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                    grayscale={false}
+                    crop="fill"
+                    gravity="auto"
+                    fallback={thumbnailImage}
+                    client:load
+                  />
+                ) : (
+                  <div class="w-full h-full bg-muted flex items-center justify-center">
+                    <span class="text-muted-foreground">No image</span>
+                  </div>
+                )}
+                
+                <!-- Tech-inspired slash overlay on hover -->
+                <div class="absolute inset-0 bg-electric-red/0 group-hover:bg-electric-red/20 transition-all duration-500 mix-blend-multiply dark:mix-blend-screen"></div>
+                
+                <!-- Digital noise overlay -->
+                <div class="absolute inset-0 bg-noise opacity-5 pointer-events-none"></div>
+              </div>
+              
+              <h2 class="text-2xl font-display font-bold tracking-tight mb-1 group-hover:text-electric-red transition-colors">
+                {photoshoot.title}
+              </h2>
+              
+              <time class="text-sm text-muted-foreground block" datetime={photoshoot.date_created}>
+                {formatDate(photoshoot.date_created)}
+              </time>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </main>
+</MainLayout> 

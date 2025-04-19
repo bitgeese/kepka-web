@@ -165,6 +165,12 @@
     position: relative;
   }
   
+  /* New grayscale-only glitch effect */
+  .glitch-effect-grayscale {
+    animation: imageGlitchGrayscale 0.4s steps(2) infinite;
+    position: relative;
+  }
+  
   @keyframes imageGlitch {
     0% { 
       clip-path: inset(30% 0 40% 0);
@@ -195,6 +201,39 @@
       clip-path: inset(0% 0 0% 0);
       transform: translate(0);
       filter: hue-rotate(0deg);
+    }
+  }
+  
+  @keyframes imageGlitchGrayscale {
+    0% { 
+      clip-path: inset(30% 0 40% 0);
+      transform: translate(-5px);
+      filter: grayscale(1) contrast(1.2) brightness(1.05);
+    }
+    20% { 
+      clip-path: inset(15% 0 60% 0);
+      transform: translate(5px);
+      filter: grayscale(1) contrast(1.2) brightness(1.05);
+    }
+    40% { 
+      clip-path: inset(50% 0 20% 0);
+      transform: translate(-3px);
+      filter: grayscale(1) contrast(1.2) brightness(1.05);
+    }
+    60% { 
+      clip-path: inset(70% 0 5% 0);
+      transform: translate(3px);
+      filter: grayscale(1) contrast(1.2) brightness(1.05);
+    }
+    80% { 
+      clip-path: inset(10% 0 85% 0);
+      transform: translate(-1px);
+      filter: grayscale(1) contrast(1.2) brightness(1.05);
+    }
+    100% { 
+      clip-path: inset(0% 0 0% 0);
+      transform: translate(0);
+      filter: grayscale(1) contrast(1.2) brightness(1.05);
     }
   }
   

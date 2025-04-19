@@ -1,5 +1,6 @@
+---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { fetchPhotoshoots, fetchPhotoshootBySlug } from '../../lib/directus';
+import { fetchPhotoshoots, fetchPhotoshootBySlug, fetchKepka, getAssetUrl } from '../../lib/directus';
 import { CloudinaryImage } from '../../components/ui/CloudinaryImage';
 
 export async function getStaticPaths() {
@@ -11,6 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { photoshoot } = Astro.props;
+const kepka = await fetchKepka();
 
 // Format the date
 const formattedDate = new Date(photoshoot.date_created).toLocaleDateString('en-US', {
@@ -18,18 +20,47 @@ const formattedDate = new Date(photoshoot.date_created).toLocaleDateString('en-U
   month: 'long',
   day: 'numeric'
 });
+---
 
 <MainLayout title={photoshoot.title}>
   <main>
+    {/* Hero section with Kepka data */}
+    {kepka && kepka.hero_image && (
+      <div class="relative h-[50vh] min-h-[400px] overflow-hidden">
+        <img 
+          src={getAssetUrl(kepka.hero_image)} 
+          alt="Hero image"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/50 flex items-center">
+          <div class="container mx-auto px-6 lg:px-16">
+            <h1 class="text-5xl md:text-6xl font-display font-bold tracking-tighter mb-6 text-white">
+              {photoshoot.title}
+            </h1>
+            {kepka.description && (
+              <div class="max-w-2xl text-white/90 prose prose-invert" set:html={kepka.description} />
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
     <div class="container mx-auto px-6 lg:px-16 py-12">
       <header class="mb-12">
-        <h1 class="text-5xl md:text-6xl font-display font-bold tracking-tighter mb-4">
-          {photoshoot.title}
-        </h1>
+        {!kepka || !kepka.hero_image ? (
+          <>
+            <h1 class="text-5xl md:text-6xl font-display font-bold tracking-tighter mb-4">
+              {photoshoot.title}
+            </h1>
+            <div class="w-24 h-1 bg-electric-red mb-8"></div>
+          </>
+        ) : (
+          <div class="w-24 h-1 bg-electric-red mb-8"></div>
+        )}
+        
         <time class="text-lg opacity-75 block mb-6" datetime={photoshoot.date_created}>
           {formattedDate}
         </time>
-        <div class="w-24 h-1 bg-electric-red mb-8"></div>
         
         {photoshoot.description && (
           <div class="prose prose-lg max-w-none mb-12" set:html={photoshoot.description} />
