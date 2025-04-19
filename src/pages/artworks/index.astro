@@ -56,9 +56,9 @@ const getSizeClass = (index: number) => {
           <CloudinaryImage
             publicId={getAssetUrl(paintingsCover)}
             alt="Artworks Cover"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
             crop="fill"
-            gravity="auto"
+            gravity="north"
             fallback={getAssetUrl(paintingsCover)}
             client:load
           />

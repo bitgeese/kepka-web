@@ -34,10 +34,10 @@ const pageTitle = "Photoshoots | " + (kepkaData?.title || "Jakub Kepka");
         <CloudinaryImage
           publicId={coverImageUrl}
           alt="Photoshoots Cover"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-top"
           quality={90}
           crop="fill"
-          gravity="auto"
+          gravity="center"
           client:load
         />
         <div class="absolute inset-0 bg-black/60 flex items-center">

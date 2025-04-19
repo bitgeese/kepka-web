@@ -58,11 +58,7 @@ export function Y2KHero({ kepkaData }) {
             JAKUB<br />KEPKA
           </h1>
           
-          <div 
-            className="text-base sm:text-lg md:text-xl max-w-md mb-12" 
-            style={{ color: 'var(--foreground)', opacity: 0.9 }}
-            dangerouslySetInnerHTML={{ __html: kepkaData?.description || "Contemporary fashion designer exploring the intersection of traditional craftsmanship and modern silhouettes." }}
-          />
+          
           
           <div className="flex flex-wrap gap-4">
             <a 
@@ -96,11 +92,11 @@ export function Y2KHero({ kepkaData }) {
             <CloudinaryImage
               publicId={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
               alt={kepkaData?.title || "Jakub Kepka Fashion"}
-              className="w-full h-full object-cover object-center grayscale hover:grayscale-0 transition-all duration-700"
+              className="w-full h-full object-cover object-top grayscale hover:grayscale-0 transition-all duration-700"
               grayscale={true}
               quality={90}
               crop="fill"
-              gravity="auto"
+              gravity="north"
               client:load
             />
           </div>
