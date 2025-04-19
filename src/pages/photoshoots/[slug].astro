@@ -1,0 +1,167 @@
+import Layout from "../../layouts/layout.astro";
+import directus from "../../lib/directus";
+import { readItems, readItem } from "@directus/sdk";
+import { getImageUrl } from "../../lib/cloudinary";
+
+export async function getStaticPaths() {
+  const photoshoots = await directus.request(readItems("kepka_shoots", {
+    fields: [
+      "*", 
+      "images.directus_files_id",
+      "kepka_shoots_files.directus_files_id"
+    ],
+  }));
+  return photoshoots.map((photoshoot) => ({ params: { slug: photoshoot.slug }, props: photoshoot }));
+}
+
+const photoshoot = Astro.props;
+
+// Helper to extract all image IDs
+const getImageIds = (photoshoot) => {
+  const imageIds = [];
+  
+  // Check different possible structures
+  if (photoshoot.images) {
+    if (Array.isArray(photoshoot.images)) {
+      photoshoot.images.forEach(img => {
+        if (typeof img === 'object' && img?.directus_files_id) {
+          imageIds.push(img.directus_files_id);
+        } else if (typeof img === 'string' || typeof img === 'number') {
+          imageIds.push(img.toString());
+        }
+      });
+    } else if (typeof photoshoot.images === 'string') {
+      imageIds.push(photoshoot.images);
+    }
+  }
+  
+  // Check join table
+  if (photoshoot.kepka_shoots_files && Array.isArray(photoshoot.kepka_shoots_files)) {
+    photoshoot.kepka_shoots_files.forEach(file => {
+      if (file?.directus_files_id) {
+        imageIds.push(file.directus_files_id);
+      }
+    });
+  }
+  
+  return imageIds;
+};
+
+const imageIds = getImageIds(photoshoot);
+
+<Layout title={photoshoot.title}>
+  <main class="photoshoot-detail">
+    <header class="photoshoot-header">
+      <h1>{photoshoot.title}</h1>
+      <time class="photoshoot-date" datetime={photoshoot.date_created}>
+        {new Date(photoshoot.date_created).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long'
+        })}
+      </time>
+    </header>
+    
+    {photoshoot.description && (
+      <div class="photoshoot-description">
+        <p>{photoshoot.description}</p>
+      </div>
+    )}
+    
+    <div class="photoshoot-gallery">
+      {imageIds.length > 0 ? (
+        imageIds.map((imageId) => (
+          <figure class="gallery-item">
+            <img 
+              src={getImageUrl(imageId, { width: 1200 })} 
+              alt={`${photoshoot.title} photo`}
+              class="gallery-image"
+              onerror="this.onerror=null; this.src=this.getAttribute('data-fallback');"
+              data-fallback={getImageUrl(imageId, {}, false)}
+            />
+          </figure>
+        ))
+      ) : (
+        <p class="no-images">No images available for this photoshoot.</p>
+      )}
+    </div>
+    
+    <div class="back-link">
+      <a href="/photoshoots">← Back to all photoshoots</a>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .photoshoot-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .photoshoot-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .photoshoot-date {
+    display: block;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+  
+  .photoshoot-description {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  
+  .photoshoot-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .gallery-item {
+    margin: 0;
+  }
+  
+  .gallery-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  
+  .gallery-image:hover {
+    transform: scale(1.02);
+  }
+  
+  .no-images {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+    padding: 3rem;
+    background: #f5f5f5;
+  }
+  
+  .back-link {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .back-link a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid currentColor;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .back-link a:hover {
+    background-color: #000;
+    color: #fff;
+  }
+</style> 

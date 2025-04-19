@@ -9,22 +9,30 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.2.2",
-    "@astrojs/react": "^4.2.2",
+    "@astrojs/mdx": "^4.2.4",
+    "@astrojs/react": "^4.2.4",
     "@directus/sdk": "^19.1.0",
+    "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-separator": "^1.1.2",
+    "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.15",
     "@types/canvas-confetti": "^1.9.0",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
-    "astro": "^5.5.5",
+    "astro": "^5.7.4",
+    "astro-cloudinary": "^1.3.2",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "lucide-react": "^0.485.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwind-merge": "^3.0.2",
-    "tailwindcss": "^4.0.15",
     "tw-animate-css": "^1.2.5"
+  },
+  "devDependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.6.2",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.17",
+    "tailwindcss-animate": "^1.0.7"
   }
 }

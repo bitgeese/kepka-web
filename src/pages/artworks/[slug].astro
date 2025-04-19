@@ -2,7 +2,7 @@
 import Layout from "../../layouts/layout.astro";
 import directus from "../../lib/directus";
 import { readItems, readItem } from "@directus/sdk";
-import { formatCloudinaryUrl } from "../../lib/cloudinary";
+import { getImageUrl } from "../../lib/cloudinary";
 
 export async function getStaticPaths() {
   const artworks = await directus.request(readItems("kepka_artworks", {
@@ -17,9 +17,11 @@ const artwork = Astro.props;
   <main class="artwork-detail">
     <div class="artwork-image-container">
       <img 
-        src={formatCloudinaryUrl(artwork.cover)} 
+        src={getImageUrl(artwork.cover, { width: 1200 })} 
         alt={artwork.title}
         class="artwork-cover"
+        onerror="this.onerror=null; this.src=this.getAttribute('data-fallback');"
+        data-fallback={getImageUrl(artwork.cover, {}, false)}
       />
     </div>
     
