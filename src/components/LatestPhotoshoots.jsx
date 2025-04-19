@@ -82,10 +82,10 @@ export function LatestPhotoshoots({ photoshoots }) {
                         <CloudinaryImage
                           publicId={imageUrl}
                           alt={photoshoot.title}
-                          className="w-full h-full object-cover transition-all duration-1000"
+                          className="w-full h-full object-cover object-top transition-all duration-1000"
                           grayscale={false}
                           crop="fill"
-                          gravity="auto"
+                          gravity="north"
                           fallback={imageUrl}
                         />
                       ) : (
