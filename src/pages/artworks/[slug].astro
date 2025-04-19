@@ -2,6 +2,7 @@
 import MainLayout from '../../layouts/MainLayout.astro';
 import { getAssetUrl } from '../../lib/directus';
 import { CloudinaryImage } from '../../components/ui/CloudinaryImage';
+import { Lightbox } from '../../components/ui/Lightbox';
 import directus from "../../lib/directus";
 import { readItems } from "@directus/sdk";
 
@@ -39,6 +40,11 @@ const formattedDate = new Date(artwork.date_created).toLocaleDateString('en-US',
   month: 'long',
   day: 'numeric'
 });
+
+// Prepare images for the lightbox
+const mainImage = artwork.cover ? getAssetUrl(artwork.cover) : '';
+const additionalImages = artwork.images ? artwork.images.map((img: string) => getAssetUrl(img)) : [];
+const allImages = [mainImage, ...additionalImages].filter(Boolean);
 ---
 
 <MainLayout title={artwork.title}>
@@ -61,7 +67,7 @@ const formattedDate = new Date(artwork.date_created).toLocaleDateString('en-US',
         {/* Artwork image - large and prominent */}
         <div class="lg:w-3/4 flex justify-center">
           {artwork.cover && (
-            <div class="max-w-4xl overflow-hidden">
+            <div class="max-w-4xl overflow-hidden cursor-pointer" onclick="window.openLightbox(0)">
               <CloudinaryImage 
                 publicId={getAssetUrl(artwork.cover)} 
                 alt={artwork.title}
@@ -100,12 +106,10 @@ const formattedDate = new Date(artwork.date_created).toLocaleDateString('en-US',
         <div class="mt-20">
           <h2 class="text-2xl font-display font-bold tracking-tighter mb-8">Additional Views</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artwork.images.map((image: string) => (
-              <a 
-                href={getAssetUrl(image)} 
-                class="block overflow-hidden hover:border-electric-red transition-all duration-300"
-                target="_blank"
-                rel="noopener"
+            {artwork.images.map((image: string, index: number) => (
+              <div 
+                class="block overflow-hidden cursor-pointer hover:border-electric-red transition-all duration-300"
+                onclick={`window.openLightbox(${index + 1})`}
               >
                 <CloudinaryImage 
                   publicId={getAssetUrl(image)} 
@@ -117,11 +121,31 @@ const formattedDate = new Date(artwork.date_created).toLocaleDateString('en-US',
                   fallback={getAssetUrl(image)}
                   client:load
                 />
-              </a>
+              </div>
             ))}
           </div>
         </div>
       )}
     </div>
   </main>
+
+  {/* Lightbox component */}
+  <Lightbox images={allImages} client:load />
 </MainLayout>
+
+<script>
+  // Add a small zoom effect on hover
+  document.addEventListener('DOMContentLoaded', () => {
+    const imageContainers = document.querySelectorAll('.cursor-pointer');
+    imageContainers.forEach(container => {
+      container.addEventListener('mouseenter', () => {
+        container.classList.add('scale-[1.01]');
+        container.classList.add('shadow-lg');
+      });
+      container.addEventListener('mouseleave', () => {
+        container.classList.remove('scale-[1.01]');
+        container.classList.remove('shadow-lg');
+      });
+    });
+  });
+</script>

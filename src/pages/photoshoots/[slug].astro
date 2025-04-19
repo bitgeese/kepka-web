@@ -1,18 +1,20 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import { fetchPhotoshootBySlug, getAssetUrl } from '../../lib/directus';
 import { CloudinaryImage } from '../../components/ui/CloudinaryImage';
+import { Lightbox } from '../../components/ui/Lightbox';
 import directus from "../../lib/directus";
 import { readItems } from "@directus/sdk";
+import { getAssetUrl } from '../../lib/directus';
 
 // The Photoshoot type isn't exported directly, recreate it here
 interface Photoshoot {
   id?: string;
-  images: string[];
+  slug: string;
   title: string;
   description: string;
   date_created: string;
-  slug: string;
+  cover: string | { directus_files_id: string } | null;
+  images: Array<string | { directus_files_id: string }>;
 }
 
 export async function getStaticPaths() {
@@ -26,7 +28,7 @@ export async function getStaticPaths() {
   );
   
   // Map photoshoots to paths and pass the entire photoshoot object as props
-  return photoshoots.map((photoshoot) => ({
+  return photoshoots.map((photoshoot: any) => ({
     params: { slug: photoshoot.slug },
     props: { photoshoot },
   }));
@@ -36,55 +38,25 @@ export async function getStaticPaths() {
 const { photoshoot } = Astro.props;
 
 // Format the date
-const formattedDate = new Date(photoshoot.date_created).toLocaleDateString('en-US', {
+const formattedDate = photoshoot ? new Date(photoshoot.date_created).toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
-});
+}) : '';
+
+// Convert image IDs to full URLs for the lightbox using our helper function
+const imageUrls = photoshoot?.images 
+  ? photoshoot.images.map((image: any) => getAssetUrl(image))
+  : [];
 ---
 
-<MainLayout title={photoshoot.title}>
-  <main>
-    <div class="container mx-auto px-6 lg:px-16 py-12">
-      <header class="mb-12">
-        <h1 class="text-5xl md:text-6xl font-display font-bold tracking-tighter mb-4">
-          {photoshoot.title}
-        </h1>
-        <div class="w-24 h-1 bg-electric-red mb-8"></div>
-        
-        <time class="text-lg opacity-75 block mb-6" datetime={photoshoot.date_created}>
-          {formattedDate}
-        </time>
-        
-        {photoshoot.description && (
-          <div class="prose prose-lg max-w-none mb-12" set:html={photoshoot.description} />
-        )}
-      </header>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {photoshoot.images.map((image) => {
-          const imageUrl = typeof image === 'string' ? image : getAssetUrl(image);
-          return (
-            <div class="aspect-square overflow-hidden">
-              <CloudinaryImage
-                publicId={imageUrl}
-                alt={photoshoot.title}
-                className="w-full h-full object-cover"
-                grayscale={false}
-                crop="fill"
-                gravity="auto" 
-                fallback={imageUrl}
-                client:load
-              />
-            </div>
-          );
-        })}
-      </div>
-      
-      <div class="mt-16 pt-8 border-t border-foreground/10">
+<MainLayout title={photoshoot?.title || 'Photoshoot'}>
+  <main class="bg-white dark:bg-black py-12">
+    <div class="container mx-auto px-6 lg:px-16">
+      <div class="mb-8">
         <a 
           href="/photoshoots" 
-          class="inline-flex items-center gap-2 font-medium hover:text-electric-red transition-colors"
+          class="inline-flex items-center gap-2 font-medium hover:text-electric-red transition-colors mb-8"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
@@ -92,6 +64,62 @@ const formattedDate = new Date(photoshoot.date_created).toLocaleDateString('en-U
           Back to All Photoshoots
         </a>
       </div>
+
+      {photoshoot && (
+        <>
+          <div class="mb-16">
+            <h1 class="text-4xl font-display font-bold tracking-tighter mb-4">
+              {photoshoot.title}
+            </h1>
+            <time class="text-sm opacity-75 block mb-4" datetime={photoshoot.date_created}>
+              {formattedDate}
+            </time>
+            
+            {photoshoot.description && (
+              <div class="prose prose-lg max-w-none mt-8" set:html={photoshoot.description} />
+            )}
+          </div>
+          
+          {/* Photo grid */}
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {photoshoot.images.map((image: any, index: number) => (
+              <div 
+                class="overflow-hidden cursor-pointer transition-transform duration-300 hover:shadow-lg"
+                onclick={`window.openLightbox(${index})`}
+              >
+                <CloudinaryImage 
+                  publicId={getAssetUrl(image)} 
+                  alt={`${photoshoot.title} - Photo ${index + 1}`}
+                  className="w-full h-full object-cover aspect-square transition-all duration-500"
+                  grayscale={false}
+                  crop="fill"
+                  gravity="auto"
+                  fallback={getAssetUrl(image)}
+                  client:load
+                />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   </main>
-</MainLayout> 
+
+  {/* Lightbox component */}
+  <Lightbox images={imageUrls} client:load />
+</MainLayout>
+
+<script>
+  // Add a small zoom effect on hover
+  document.addEventListener('DOMContentLoaded', () => {
+    const imageContainers = document.querySelectorAll('.cursor-pointer');
+    imageContainers.forEach(container => {
+      container.addEventListener('mouseenter', () => {
+        container.classList.add('scale-[1.02]');
+      });
+      container.addEventListener('mouseleave', () => {
+        container.classList.remove('scale-[1.02]');
+      });
+    });
+  });
+</script> 
