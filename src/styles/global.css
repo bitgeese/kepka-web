@@ -184,7 +184,7 @@
     text-decoration: underline;
   }
   
-  /* Y2K/Techno Aesthetic */
+  
   .glitch {
     @apply relative;
     animation: glitch 0.5s linear infinite;

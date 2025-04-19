@@ -18,7 +18,13 @@ const currentPath = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Jakub Kepka - Fashion Designer" />
+    <meta name="description" content="Jakub Kepka - Fashion Designer and Creative Director based in Warsaw, Poland. Explore my latest collections, photoshoots, and fashion designs." />
+    <meta name="keywords" content="Jakub Kepka, fashion designer, Warsaw, Poland, fashion collections, photoshoots, designer clothing" />
+    <meta property="og:title" content={`${title} | Jakub Kepka`} />
+    <meta property="og:description" content="Jakub Kepka - Fashion Designer and Creative Director based in Warsaw, Poland" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>{title} | Jakub Kepka</title>
     <ThemeScript />
     <link rel="preconnect" href="https://fonts.cdnfonts.com" />
