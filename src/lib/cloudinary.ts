@@ -2,10 +2,10 @@
  * Image utility functions for handling Directus and Cloudinary URLs
  */
 
-// Constants
-const DIRECTUS_URL = 'https://cms.fram.dev';
-const CLOUDINARY_CLOUD_NAME = 'dvlwpeoe9';
-const CLOUDINARY_VERSION = '1745013619'; // Default version
+// Environment variables with fallbacks
+const DIRECTUS_URL = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://cms.fram.dev';
+const CLOUDINARY_CLOUD_NAME = import.meta.env.PUBLIC_CLOUDINARY_CLOUD_NAME || 'dvlwpeoe9';
+const CLOUDINARY_VERSION = import.meta.env.PUBLIC_CLOUDINARY_VERSION || '1745013619';
 
 /**
  * Get a direct Directus asset URL
@@ -40,6 +40,7 @@ export const formatCloudinaryUrl = (assetId: string | any, options: {
   height?: number;
   quality?: number;
   version?: string;
+  grayscale?: boolean;
 } = {}): string => {
   if (!assetId) return '';
   
@@ -51,23 +52,38 @@ export const formatCloudinaryUrl = (assetId: string | any, options: {
     return '';
   }
   
-  // Clean the ID (remove file extension if present)
-  const cleanId = id.toString().split('.')[0];
+  // Extract actual ID from Directus URL if necessary
+  let cleanId = id.toString();
+  if (cleanId.includes('/assets/')) {
+    cleanId = cleanId.split('/assets/')[1];
+  }
+  
+  // Remove any file extension
+  cleanId = cleanId.split('.')[0];
   
   // Use provided version or default
   const version = options.version || CLOUDINARY_VERSION;
   
-  // Build transformation string
-  const transformations = [
-    options.width ? `w_${options.width}` : '',
-    options.height ? `h_${options.height}` : '',
-    options.quality ? `q_${options.quality}` : ''
-  ].filter(Boolean).join(',');
+  // Build transformation array
+  const transformations = [];
   
-  const transformationPath = transformations ? `/${transformations}` : '';
+  // Add grayscale first if needed
+  if (options.grayscale) {
+    transformations.push('e_grayscale');
+  }
   
-  // Format: https://res.cloudinary.com/cloud_name/image/upload/v{version}/transformations/asset_id.jpg
-  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/v${version}${transformationPath}/${cleanId}.jpg`;
+  // Add size transformations
+  if (options.width) transformations.push(`w_${options.width}`);
+  if (options.height) transformations.push(`h_${options.height}`);
+  if (options.quality) transformations.push(`q_${options.quality}`);
+  
+  // Join all transformations with commas
+  const transformationString = transformations.length > 0 
+    ? transformations.join(',') + '/' 
+    : '';
+  
+  // Format: https://res.cloudinary.com/cloud_name/image/upload/v{version}/{transformations}/{asset_id}.jpg
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/v${version}/${transformationString}${cleanId}.jpg`;
 };
 
 /**
@@ -81,7 +97,13 @@ export const formatCloudinaryUrl = (assetId: string | any, options: {
  */
 export const getImageUrl = (
   assetId: string | any,
-  options: { width?: number; height?: number; quality?: number; version?: string } = {},
+  options: { 
+    width?: number; 
+    height?: number; 
+    quality?: number; 
+    version?: string;
+    grayscale?: boolean;
+  } = {},
   useCloudinary = true
 ): string => {
   return useCloudinary 

@@ -2,25 +2,11 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import { Y2KHero } from "../components/Y2KHero.jsx";
 import { LatestPhotoshoots } from "../components/LatestPhotoshoots.jsx";
-import directus from "../lib/directus";
-import { readItems } from "@directus/sdk";
+import { fetchPhotoshoots } from "../lib/directus";
 
-// Fetch the latest photoshoots
-const photoshoots = await directus.request(
-	readItems("kepka_shoots", {
-		fields: [
-			"*" // Get all fields and let the component handle the structure
-		],
-		sort: ["-date_created"],
-		limit: 6,
-	})
-);
+// Fetch the latest photoshoots with our helper function
+const photoshoots = await fetchPhotoshoots(6);
 
-// Debug: Log the structure of a photoshoot if in dev mode
-if (import.meta.env.DEV) {
-  console.log("First photoshoot structure:", 
-    photoshoots[0] ? JSON.stringify(photoshoots[0], null, 2) : "No photoshoots found");
-}
 ---
 
 <MainLayout title="Home">

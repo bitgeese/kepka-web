@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { getImageUrl } from '../lib/cloudinary';
+import { CloudinaryImage } from './ui/CloudinaryImage';
 
 export function LatestPhotoshoots({ photoshoots }) {
   // Debug in development to see the structure of the data
@@ -12,53 +12,23 @@ export function LatestPhotoshoots({ photoshoots }) {
     }
   }, [photoshoots]);
   
-  // Helper to safely extract the first image ID
-  const getFirstImageId = (photoshoot) => {
+  // Helper to safely extract the first image URL
+  const getFirstImageUrl = (photoshoot) => {
     if (!photoshoot || !photoshoot.images) return null;
     
     // Handle empty array
     if (Array.isArray(photoshoot.images) && photoshoot.images.length === 0) return null;
     
     try {
-      // Case 1: Array of objects with directus_files_id (from join table)
-      if (Array.isArray(photoshoot.images) && 
-          typeof photoshoot.images[0] === 'object' && 
-          photoshoot.images[0]?.directus_files_id) {
-        return photoshoot.images[0].directus_files_id;
-      }
-      
-      // Case 2: Array of numbers (direct IDs)
-      if (Array.isArray(photoshoot.images) && 
-          typeof photoshoot.images[0] === 'number') {
-        return photoshoot.images[0].toString();
-      }
-      
-      // Case 3: Array of direct string IDs
+      // Since images now contains direct URLs, simply return the first one
       if (Array.isArray(photoshoot.images) && typeof photoshoot.images[0] === 'string') {
         return photoshoot.images[0];
       }
       
-      // Case 4: Single string
-      if (typeof photoshoot.images === 'string') {
-        return photoshoot.images;
-      }
-      
-      // Case 5: Single object with id
-      if (typeof photoshoot.images === 'object' && photoshoot.images?.id) {
-        return photoshoot.images.id;
-      }
-      
-      // Case 6: Object with directus_files_id (from kepka_shoots_files join table)
-      if (photoshoot.kepka_shoots_files && 
-          Array.isArray(photoshoot.kepka_shoots_files) && 
-          photoshoot.kepka_shoots_files[0]?.directus_files_id) {
-        return photoshoot.kepka_shoots_files[0].directus_files_id;
-      }
-      
-      console.warn('Unable to determine image ID format:', photoshoot.images);
+      console.warn('Unable to determine image URL format:', photoshoot.images);
       return null;
     } catch (error) {
-      console.error('Error extracting image ID:', error);
+      console.error('Error extracting image URL:', error);
       return null;
     }
   };
@@ -96,7 +66,7 @@ export function LatestPhotoshoots({ photoshoots }) {
           {arrangedPhotoshoots.map((row, rowIndex) => (
             <div key={rowIndex} className={`grid grid-cols-1 md:grid-cols-${row.length} gap-8 md:gap-12`}>
               {row.map((photoshoot, index) => {
-                const imageId = getFirstImageId(photoshoot);
+                const imageUrl = getFirstImageUrl(photoshoot);
                 return (
                   <a 
                     key={photoshoot.id || `${rowIndex}-${index}`} 
@@ -108,21 +78,15 @@ export function LatestPhotoshoots({ photoshoots }) {
                       transition-all duration-500 group-hover:border-electric-red
                       ${row.length === 1 ? 'aspect-[16/9]' : 'aspect-[3/4]'}
                     `}>
-                      {imageId ? (
-                        <img
-                          src={getImageUrl(imageId, { 
-                            width: row.length === 1 ? 1600 : 800, 
-                            height: row.length === 1 ? 900 : 1000 
-                          })}
+                      {imageUrl ? (
+                        <CloudinaryImage
+                          publicId={imageUrl}
                           alt={photoshoot.title}
                           className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0"
-                          onError={(e) => {
-                            console.warn(`Image failed to load for: ${imageId}`);
-                            // If Cloudinary fails, try Directus directly
-                            const directusUrl = getImageUrl(imageId, {}, false);
-                            console.log('Falling back to Directus URL:', directusUrl);
-                            e.target.src = directusUrl;
-                          }}
+                          grayscale={true}
+                          crop="fill"
+                          gravity="auto"
+                          fallback={imageUrl}
                         />
                       ) : (
                         <div className="flex items-center justify-center w-full h-full bg-muted">
