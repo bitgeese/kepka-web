@@ -74,7 +74,7 @@ export function LatestPhotoshoots({ photoshoots }) {
                     className="group relative overflow-hidden"
                   >
                     <div className={`
-                      relative w-full overflow-hidden border-2 border-foreground/10 
+                      relative w-full overflow-hidden
                       transition-all duration-500 group-hover:border-electric-red
                       ${row.length === 1 ? 'aspect-[16/9]' : 'aspect-[3/4]'}
                     `}>
@@ -82,8 +82,8 @@ export function LatestPhotoshoots({ photoshoots }) {
                         <CloudinaryImage
                           publicId={imageUrl}
                           alt={photoshoot.title}
-                          className="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0"
-                          grayscale={true}
+                          className="w-full h-full object-cover transition-all duration-1000"
+                          grayscale={false}
                           crop="fill"
                           gravity="auto"
                           fallback={imageUrl}

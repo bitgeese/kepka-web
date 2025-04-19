@@ -40,15 +40,15 @@ const formattedDate = new Date(photoshoot.date_created).toLocaleDateString('en-U
         {photoshoot.images.map((imageUrl: string) => (
           <a 
             href={imageUrl} 
-            class="block aspect-[3/4] overflow-hidden border-2 border-foreground/10 hover:border-electric-red transition-all duration-300"
+            class="block aspect-[3/4] overflow-hidden hover:border-electric-red transition-all duration-300"
             target="_blank"
             rel="noopener"
           >
             <CloudinaryImage 
               publicId={imageUrl} 
               alt={`${photoshoot.title} - Photo`}
-              className="w-full h-full object-cover transition-all duration-500 grayscale hover:grayscale-0"
-              grayscale={true}
+              className="w-full h-full object-cover transition-all duration-500"
+              grayscale={false}
               crop="fill"
               gravity="auto"
               fallback={imageUrl}

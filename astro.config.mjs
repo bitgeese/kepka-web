@@ -8,5 +8,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  integrations: [react()]
+  integrations: [
+    react()
+  ],
+  // Configure Cloudinary via environment variables instead of integration
+  // PUBLIC_CLOUDINARY_CLOUD_NAME is already set in .env
 });
