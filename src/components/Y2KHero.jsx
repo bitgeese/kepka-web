@@ -4,8 +4,9 @@ import { getAssetUrl } from '../lib/directus';
 
 export function Y2KHero({ kepkaData }) {
   const imageRef = useRef(null);
+  const nameRef = useRef(null);
 
-  // Random glitch effect on the image only
+  // Random glitch effect on the image
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -18,13 +19,28 @@ export function Y2KHero({ kepkaData }) {
       }
     };
 
-    // Initial glitch
+    // Text glitch effect
+    const applyTextGlitch = () => {
+      if (nameRef.current) {
+        nameRef.current.classList.add('text-glitch');
+        nameRef.current.setAttribute('data-text', nameRef.current.textContent);
+        setTimeout(() => {
+          nameRef.current?.classList.remove('text-glitch');
+        }, 1500);
+      }
+    };
+
+    // Initial effects with staggered timing
     setTimeout(applyGlitchEffect, 2000);
+    setTimeout(applyTextGlitch, 3000);
 
     // Random glitches
     const interval = setInterval(() => {
       if (Math.random() > 0.8) {
         applyGlitchEffect();
+      }
+      if (Math.random() > 0.9) {
+        applyTextGlitch();
       }
     }, 8000);
 
@@ -33,58 +49,53 @@ export function Y2KHero({ kepkaData }) {
 
   return (
     <section 
-      className="relative w-full overflow-hidden pt-4 md:pt-8 min-h-[calc(100vh-0px)]"
+      className="relative w-full overflow-hidden min-h-[100vh] flex flex-col"
       style={{ 
-        backgroundColor: 'var(--background)',
-        color: 'var(--foreground)'
+        backgroundColor: 'black',
+        color: 'white'
       }}
     >
-      {/* Grid layout */}
-      <div className="grid grid-cols-1 md:grid-cols-12 h-full">
-        {/* Text content */}
-        <div className="md:col-span-7 flex flex-col justify-center px-6 md:px-16 py-12 z-10">
-          <div className="mb-8 border-l-4 pl-4" style={{ borderColor: 'var(--electric-red)' }}>
-            <h2 className="text-sm md:text-base uppercase tracking-widest mb-1 font-bold">
-              Fashion Designer
-            </h2>
-            <p className="text-xs md:text-sm" style={{ color: 'var(--muted-foreground)' }}>
-              Warsaw, Poland
-            </p>
+      {/* Desktop layout */}
+      <div className="hidden md:flex flex-1">
+        {/* Left content panel */}
+        <div className="w-1/2 flex flex-col justify-center pl-16 pr-8">
+          <div className="flex items-center mb-6">
+            <div className="w-1 h-16 bg-electric-red mr-4"></div>
+            <div>
+              <h2 className="text-base uppercase tracking-widest mb-1 font-bold">
+                Fashion Designer
+              </h2>
+              <p className="text-sm opacity-75">
+                Warsaw, Poland
+              </p>
+            </div>
           </div>
 
           <h1 
-            className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold tracking-tighter mb-8 leading-none"
+            ref={nameRef}
+            className="text-[8rem] leading-[0.85] font-display font-bold tracking-tighter mb-12"
           >
             JAKUB<br />KĘPKA
           </h1>
           
-          
-          
-          <div className="flex flex-wrap gap-4">
+          <div className="flex gap-6">
             <a 
               href="/shop" 
-              className="px-6 sm:px-8 py-3 border-2 font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
-              style={{ borderColor: 'var(--foreground)' }}
+              className="px-8 py-3 border-2 border-white font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
             >
-              Shop my Designs
+              Shop My Designs
             </a>
             <a 
               href="/about" 
-              className="px-6 sm:px-8 py-3 font-bold uppercase tracking-wide hover:bg-electric-blue hover:border-electric-blue hover:text-white transition-all duration-300"
-              style={{ 
-                backgroundColor: 'var(--foreground)',
-                color: 'var(--background)',
-                borderColor: 'var(--foreground)',
-                borderWidth: '2px'
-              }}
+              className="px-8 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-blue hover:border-electric-blue hover:text-white transition-all duration-300"
             >
               About Me
             </a>
           </div>
         </div>
-
-        {/* Image with diagonal slash - occupies 5 columns on desktop */}
-        <div className="relative hidden md:block md:col-span-5">
+        
+        {/* Right image panel */}
+        <div className="w-1/2 relative">
           <div 
             ref={imageRef}
             className="absolute inset-0 overflow-hidden"
@@ -92,7 +103,7 @@ export function Y2KHero({ kepkaData }) {
             <CloudinaryImage
               publicId={kepkaData.hero_image} 
               alt={kepkaData?.title || "Jakub Kepka Fashion"}
-              className="w-full h-full object-cover object-top transition-all duration-700"
+              className="w-full h-full object-cover object-center"
               grayscale={false}
               quality={90}
               crop="fill"
@@ -103,25 +114,64 @@ export function Y2KHero({ kepkaData }) {
         </div>
       </div>
 
-      {/* Mobile image - optimized to prevent top from being cut off */}
-      <div className="relative md:hidden mt-8 h-[50vh] sm:h-[60vh] w-full">
-        <CloudinaryImage
-          publicId={kepkaData?.hero_image || "https://img2.storyblok.com/500x0/filters:quality(95),format(png)/f/105186/4822x6028/cd59c77950/a-painted-veil_3179_jpeg-quality-50.jpg"} 
-          alt={kepkaData?.title || "Jakub Kepka Fashion"}
-          className="w-full h-full object-cover object-top"
-          grayscale={false}
-          quality={85}
-          crop="scale"
-          gravity="north"
-          width={640}
-          client:load
-        />
+      {/* Mobile layout - stacked with full-width elements */}
+      <div className="md:hidden flex flex-col min-h-screen">
+        {/* Top content */}
+        <div className="flex-1 px-6 pt-10 pb-6 flex flex-col">
+          <div className="flex items-center mb-6">
+            <div className="w-1 h-12 bg-electric-red mr-3"></div>
+            <div>
+              <h2 className="text-sm uppercase tracking-widest mb-0.5 font-bold">
+                Fashion Designer
+              </h2>
+              <p className="text-xs opacity-75">
+                Warsaw, Poland
+              </p>
+            </div>
+          </div>
+
+          <h1 
+            ref={nameRef}
+            className="text-[5rem] leading-[0.85] font-display font-bold tracking-tighter mb-8"
+          >
+            JAKUB<br />KĘPKA
+          </h1>
+          
+          <div className="flex flex-col gap-4 w-full">
+            <a 
+              href="/shop" 
+              className="px-6 py-3 border-2 border-white font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300 text-center"
+            >
+              Shop My Designs
+            </a>
+            <a 
+              href="/about" 
+              className="px-6 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-blue hover:border-electric-blue hover:text-white transition-all duration-300 text-center"
+            >
+              About Me
+            </a>
+          </div>
+        </div>
+        
+        {/* Bottom image - full width and takes remaining screen space */}
+        <div className="h-[60vh] w-full relative">
+          <CloudinaryImage
+            publicId={kepkaData?.hero_image} 
+            alt={kepkaData?.title || "Jakub Kepka Fashion"}
+            className="w-full h-full object-contain object-top"
+            grayscale={false}
+            quality={85}
+            crop="scale"
+            gravity="north"
+            client:load
+          />
+        </div>
       </div>
       
-      {/* Scroll indicator */}
+      {/* Scroll indicator - only on desktop */}
       <div className="absolute bottom-8 left-0 right-0 hidden md:flex justify-center">
         <div className="animate-bounce flex flex-col items-center opacity-80">
-          <span className="text-xs uppercase tracking-wider mb-2 font-bold">Scroll</span>
+          <span className="text-xs uppercase tracking-wider mb-2 font-mono">Scroll</span>
           <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" strokeWidth="2"/>
             <circle cx="8" cy="8" r="3" fill="currentColor" className="animate-pulse"/>
