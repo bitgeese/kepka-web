@@ -58,7 +58,7 @@ const getSizeClass = (index: number) => {
             alt="Artworks Cover"
             className="w-full h-full object-cover object-top"
             crop="fill"
-            gravity="north"
+            gravity="center"
             fallback={getAssetUrl(paintingsCover)}
             client:load
           />
@@ -102,10 +102,10 @@ const getSizeClass = (index: number) => {
                       <CloudinaryImage
                         publicId={getAssetUrl(thumbnailImage)}
                         alt={artwork.title}
-                        className="w-full aspect-square object-cover transition-all duration-700 group-hover:scale-102"
+                        className="w-full aspect-square object-contain transition-all duration-700 group-hover:scale-102"
                         grayscale={false}
-                        crop="fill"
-                        gravity="auto"
+                        crop="scale"
+                        gravity="center"
                         fallback={getAssetUrl(thumbnailImage)}
                         client:load
                       />
