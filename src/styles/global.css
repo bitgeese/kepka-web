@@ -144,6 +144,24 @@
     @apply font-bold tracking-tighter;
   }
   
+  /* Style for text selection - apply to all elements */
+  ::selection {
+    background-color: var(--electric-red);
+    color: white;
+  }
+  
+  /* Style for Markdown links - target prose content */
+  .prose a {
+    color: var(--electric-red);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  .prose a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+  
   /* Y2K/Techno Aesthetic */
   .glitch {
     @apply relative;
