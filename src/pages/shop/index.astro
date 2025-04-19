@@ -3,8 +3,24 @@ import MainLayout from "../../layouts/MainLayout.astro";
 import { fetchProducts, fetchKepka, getAssetUrl } from "../../lib/directus";
 import { CloudinaryImage } from "../../components/ui/CloudinaryImage";
 
+// Product type definition
+interface Product {
+  id?: string;
+  title?: string;
+  name?: string;  // Some products might use name instead of title
+  description: string;
+  price: string;
+  buy_link: string;
+  slug: string;
+  date_created: string;
+  quantity: number;
+  material: string;
+  images: string[];
+  photoshoots?: any[];
+}
+
 // Fetch all products
-const products = await fetchProducts(100); // Get all products up to 100
+const products = await fetchProducts(100) as Product[]; // Get all products up to 100
 
 // Fetch Kepka singleton data for the header/cover image
 const kepkaData = await fetchKepka();
@@ -68,37 +84,42 @@ const pageTitle = "Shop | " + (kepkaData?.title || "Jakub Kepka");
           </div>
         ) : (
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {products.map((product) => (
-              <a 
-                href={`/shop/${product.slug}`} 
-                class="group block transition-all duration-500"
-              >
-                <div class="overflow-hidden mb-4 aspect-[3/4] bg-muted">
-                  {product.images && product.images.length > 0 ? (
-                    <CloudinaryImage 
-                      publicId={product.images[0]} 
-                      alt={product.title}
-                      className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
-                      grayscale={false}
-                      crop="scale"
-                      gravity="north"
-                      fallback={product.images[0]}
-                      client:load
-                    />
-                  ) : (
-                    <div class="flex items-center justify-center w-full h-full bg-muted">
-                      <span class="text-muted-foreground">No image available</span>
-                    </div>
-                  )}
-                </div>
-                
-                <h2 class="text-xl font-display font-bold tracking-tight">{product.title}</h2>
-                
-                <div class="mt-2 flex items-center justify-between">
-                  <span class="font-medium">{formatPrice(product.price)}</span>
-                </div>
-              </a>
-            ))}
+            {products.map((product) => {
+              // Use title or name, whichever is available
+              const productTitle = product.title || product.name || 'Untitled Product';
+              
+              return (
+                <a 
+                  href={`/shop/${product.slug}`} 
+                  class="group block transition-all duration-500"
+                >
+                  <div class="overflow-hidden mb-4 aspect-[3/4] bg-muted">
+                    {product.images && product.images.length > 0 ? (
+                      <CloudinaryImage 
+                        publicId={product.images[0]} 
+                        alt={productTitle}
+                        className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                        grayscale={false}
+                        crop="scale"
+                        gravity="auto"
+                        fallback={product.images[0]}
+                        client:load
+                      />
+                    ) : (
+                      <div class="flex items-center justify-center w-full h-full bg-muted">
+                        <span class="text-muted-foreground">No image available</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <h2 class="text-xl font-display font-bold tracking-tight">{productTitle}</h2>
+                  
+                  <div class="mt-2 flex items-center justify-between">
+                    <span class="font-medium">{formatPrice(product.price)}</span>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         )}
       </div>

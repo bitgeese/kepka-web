@@ -9,7 +9,7 @@ interface Product {
   id?: string;
   slug: string;
   title?: string;
-  name?: string;
+  name?: string;  // Some products might use name instead of title
   description: string;
   price: string;
   buy_link: string;
@@ -35,10 +35,10 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 
 // Fetch the product with full photoshoot data using our enhanced function
-const product = await fetchProductBySlug(slug as string);
+const product = await fetchProductBySlug(slug as string) as Product | null;
 
 // Get the product title from either title or name field
-const productTitle = product?.title || product?.name || 'Product not found';
+const productTitle = product?.title || (product as any)?.name || 'Product not found';
 
 // Format the price
 const formattedPrice = product?.price 
@@ -103,7 +103,7 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
                     alt={productTitle}
                     className="w-full h-auto object-contain max-h-[70vh]"
                     grayscale={false}
-                    crop="fill"
+                    crop="scale"
                     gravity="auto"
                     fallback={getAssetUrl(product.images[0])}
                     client:load
@@ -125,7 +125,7 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
                         className="w-full h-full object-contain aspect-square"
                         grayscale={false}
                         crop="scale"
-                        gravity="north"
+                        gravity="auto"
                         fallback={getAssetUrl(image)}
                         client:load
                       />
@@ -190,7 +190,7 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
                 As Seen In These Shows
               </h2>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {product.photoshoots.map((photoshoot: any) => (
+                {product.photoshoots && product.photoshoots.map((photoshoot: any) => (
                   <a href={`/photoshoots/${photoshoot.slug}`} class="group">
                     <div class="overflow-hidden mb-4 aspect-square">
                       {photoshoot.images && photoshoot.images.length > 0 && (
@@ -200,7 +200,7 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                           grayscale={false}
                           crop="fill"
-                          gravity="face"
+                          gravity="auto"
                           fallback={getAssetUrl(photoshoot.images[0])}
                           client:load
                         />

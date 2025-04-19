@@ -8,7 +8,7 @@ interface CloudinaryImageProps {
   height?: number;
   aspectRatio?: number;
   crop?: 'fill' | 'scale' | 'crop';
-  gravity?: 'auto' | 'face' | 'center';
+  gravity?: 'auto' | 'face' | 'center' | 'north';
   className?: string;
   fallback?: string;
   grayscale?: boolean;
