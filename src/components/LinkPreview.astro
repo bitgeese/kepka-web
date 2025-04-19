@@ -1,0 +1,37 @@
+---
+import { LinkPreview as EmbedLinkPreview } from 'astro-embed';
+
+interface Props {
+  url: string;
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { url, title, description, image } = Astro.props;
+const hasManualData = !!(title || description || image);
+
+// Extract domain from URL
+const domain = url ? new URL(url).hostname.replace('www.', '') : '';
+---
+
+{hasManualData ? (
+  <div class="link-preview">
+    {image && (
+      <div class="link-preview-image-container">
+        <img src={image} alt={title || ''} class="link-preview-image" />
+      </div>
+    )}
+    
+    <div class="link-preview-content">
+      {title && <h3 class="link-preview-title">{title}</h3>}
+      {description && <p class="link-preview-description">{description}</p>}
+      
+      <a href={url} target="_blank" rel="noopener noreferrer" class="link-preview-url">
+        {domain}
+      </a>
+    </div>
+  </div>
+) : (
+  <EmbedLinkPreview id={url} />
+)} 

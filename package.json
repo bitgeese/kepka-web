@@ -29,6 +29,7 @@
     "marked": "^15.0.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "sharp": "0.32.6",
     "tw-animate-css": "^1.2.5"
   },
   "devDependencies": {
