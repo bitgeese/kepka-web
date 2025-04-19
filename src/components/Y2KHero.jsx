@@ -3,34 +3,6 @@ import { CloudinaryImage } from './ui/CloudinaryImage';
 import { getAssetUrl } from '../lib/directus';
 
 export function Y2KHero({ kepkaData }) {
-  const imageRef = useRef(null);
-
-  // Random glitch effect on the image only
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const applyGlitchEffect = () => {
-      if (imageRef.current) {
-        imageRef.current.classList.add('glitch-effect-grayscale');
-        setTimeout(() => {
-          imageRef.current?.classList.remove('glitch-effect-grayscale');
-        }, 500);
-      }
-    };
-
-    // Initial glitch effect
-    setTimeout(applyGlitchEffect, 2000);
-
-    // Random glitches
-    const interval = setInterval(() => {
-      if (Math.random() > 0.8) {
-        applyGlitchEffect();
-      }
-    }, 8000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section 
       className="relative w-full overflow-hidden min-h-[100vh] flex flex-col"
@@ -70,7 +42,7 @@ export function Y2KHero({ kepkaData }) {
             </a>
             <a 
               href="/about" 
-              className="px-8 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-blue hover:border-electric-blue hover:text-white transition-all duration-300"
+              className="px-8 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
             >
               About Me
             </a>
@@ -79,10 +51,7 @@ export function Y2KHero({ kepkaData }) {
         
         {/* Right image panel */}
         <div className="w-1/2 relative">
-          <div 
-            ref={imageRef}
-            className="absolute inset-0 overflow-hidden"
-          >
+          <div className="absolute inset-0 overflow-hidden">
             <CloudinaryImage
               publicId={kepkaData.hero_image} 
               alt={kepkaData?.title || "Jakub Kepka Fashion"}
@@ -128,7 +97,7 @@ export function Y2KHero({ kepkaData }) {
             </a>
             <a 
               href="/about" 
-              className="px-6 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-blue hover:border-electric-blue hover:text-white transition-all duration-300 text-center"
+              className="px-6 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300 text-center"
             >
               About Me
             </a>

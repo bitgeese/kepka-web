@@ -80,8 +80,8 @@ const pageTitle = "Shop | " + (kepkaData?.title || "Jakub Kepka");
                       alt={product.title}
                       className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
                       grayscale={false}
-                      crop="fill"
-                      gravity="auto"
+                      crop="scale"
+                      gravity="north"
                       fallback={product.images[0]}
                       client:load
                     />
