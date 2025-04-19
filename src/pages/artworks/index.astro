@@ -5,6 +5,18 @@ import { CloudinaryImage } from "../../components/ui/CloudinaryImage";
 import directus from "../../lib/directus";
 import { readItems, readSingleton } from "@directus/sdk";
 
+// Artwork type definition
+interface Artwork {
+  id?: string;
+  title: string;
+  description?: string;
+  date_created: string;
+  slug: string;
+  cover: string;
+  images?: string[];
+  sort?: number;
+}
+
 // Fetch all artworks
 const artworks = await directus.request(
   readItems('kepka_artworks', {
@@ -12,7 +24,7 @@ const artworks = await directus.request(
     sort: ['sort'],
     limit: 100,
   })
-);
+) as Artwork[];
 
 // Fetch Kepka global settings to get paintings_cover
 const kepkaData = await directus.request(
@@ -57,8 +69,8 @@ const getSizeClass = (index: number) => {
             publicId={getAssetUrl(paintingsCover)}
             alt="Artworks Cover"
             className="w-full h-full object-cover object-top"
-            crop="fill"
-            gravity="center"
+            crop="scale"
+            gravity="north"
             fallback={getAssetUrl(paintingsCover)}
             client:load
           />
@@ -88,7 +100,7 @@ const getSizeClass = (index: number) => {
     ) : (
       <div class="container max-w-5xl mx-auto px-6 lg:px-8 py-24">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-40">
-          {artworks.map((artwork) => {
+          {artworks.map((artwork: Artwork) => {
             const thumbnailImage = artwork.cover || null;
             
             return (
@@ -98,7 +110,18 @@ const getSizeClass = (index: number) => {
                   class="block"
                 >
                   <figure class="mb-6 overflow-hidden">
-                    {thumbnailImage ? (
+                    {artwork.images && artwork.images.length > 0 ? (
+                      <CloudinaryImage
+                        publicId={getAssetUrl(artwork.images[0])}
+                        alt={artwork.title}
+                        className="w-full aspect-square object-contain transition-all duration-700 group-hover:scale-102"
+                        grayscale={false}
+                        crop="scale"
+                        gravity="center"
+                        fallback={getAssetUrl(artwork.images[0])}
+                        client:load
+                      />
+                    ) : thumbnailImage ? (
                       <CloudinaryImage
                         publicId={getAssetUrl(thumbnailImage)}
                         alt={artwork.title}

@@ -74,7 +74,7 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
                 alt={artwork.title}
                 className="w-full h-auto object-contain max-h-[85vh]"
                 grayscale={false}
-                crop="fill"
+                crop="scale"
                 gravity="auto"
                 fallback={getAssetUrl(artwork.cover)}
                 client:load
@@ -115,9 +115,9 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
                 <CloudinaryImage 
                   publicId={getAssetUrl(image)} 
                   alt={`${artwork.title} - Detail`}
-                  className="w-full h-full object-cover transition-all duration-500"
+                  className="w-full h-full object-contain transition-all duration-500"
                   grayscale={false}
-                  crop="fill"
+                  crop="scale"
                   gravity="auto"
                   fallback={getAssetUrl(image)}
                   client:load
