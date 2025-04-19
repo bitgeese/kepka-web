@@ -23,8 +23,9 @@ type Artwork = {
   cover: string;
   title: string;
   description: string;
-  date_created: string
+  date_created: string;
   slug: string;
+  sort: number;
 }
 
 type Link = {
@@ -44,8 +45,9 @@ type Photoshoot = {
     images: ImageRelation[] | string[];
     title: string;
     description: string;
-    date_created: string
+    date_created: string;
     slug: string;
+    sort: number;
     products?: Product[];
 }
 
@@ -92,7 +94,8 @@ export async function fetchPhotoshoots(limit = 6, includeProducts = false) {
           'images.directus_files_id',
           ...(includeProducts ? ['products.*'] : [])
         ] as any,
-        sort: ['-date_created'],
+        // Fallback to date_created if sort doesn't exist
+        sort: ['sort', '-date_created'],
         limit,
       })
     ) as unknown as Photoshoot[];
@@ -306,6 +309,25 @@ export async function fetchPhotoshootById(id: string | number) {
   } catch (error) {
     console.error(`Error fetching photoshoot with ID ${id}:`, error);
     return null;
+  }
+}
+
+/**
+ * Fetch artworks with sorting
+ */
+export async function fetchArtworks(limit = 100) {
+  try {
+    return await directus.request(
+      readItems('kepka_artworks', {
+        fields: ['*'],
+        // Fallback to date_created if sort doesn't exist
+        sort: ['sort', '-date_created'],
+        limit,
+      })
+    );
+  } catch (error) {
+    console.error('Error fetching artworks:', error);
+    return [];
   }
 }
 
