@@ -24,6 +24,13 @@ type Artwork = {
   slug: string;
 }
 
+type Link = {
+  id: string;
+  description: string;
+  url: string;
+  type: 'Article' | 'Video' | 'Auction'; 
+}
+
 // Updated to properly reflect actual structure from API
 type ImageRelation = {
   directus_files_id: string;
@@ -43,6 +50,7 @@ export type Schema = {
   kepka: Kepka;
   kepka_pages: Page[];
   kepka_shoots: Photoshoot[];
+  kepka_links: Link[];
 }
 
 // Environment variables
@@ -149,6 +157,23 @@ export async function fetchKepka() {
   } catch (error) {
     console.error('Error fetching Kepka data:', error);
     return null;
+  }
+}
+
+/**
+ * Fetch links
+ */
+export async function fetchLinks() {
+  try {
+    return await directus.request(
+      readItems('kepka_links', {
+        fields: ['*'],
+        sort: ['-id'],
+      })
+    );
+  } catch (error) {
+    console.error('Error fetching links:', error);
+    return [];
   }
 }
 
