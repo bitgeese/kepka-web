@@ -9,7 +9,7 @@ import { readItems, readSingleton } from "@directus/sdk";
 const artworks = await directus.request(
   readItems('kepka_artworks', {
     fields: ['*'],
-    sort: ['-date_created'],
+    sort: ['sort'],
     limit: 100,
   })
 );
