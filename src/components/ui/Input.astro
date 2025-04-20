@@ -1,0 +1,130 @@
+---
+export interface Props {
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date';
+  name?: string;
+  id?: string;
+  placeholder?: string;
+  value?: string | number;
+  class?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'outline' | 'filled';
+  fullWidth?: boolean;
+  min?: number | string;
+  max?: number | string;
+  step?: number | string;
+  autocomplete?: string;
+  autofocus?: boolean;
+  maxlength?: number;
+  minlength?: number;
+  pattern?: string;
+  icon?: string;
+  iconPosition?: 'left' | 'right';
+  error?: string;
+}
+
+const {
+  type = 'text',
+  name,
+  id = name,
+  placeholder,
+  value,
+  class: className = '',
+  required = false,
+  disabled = false,
+  readonly = false,
+  size = 'md',
+  variant = 'default',
+  fullWidth = false,
+  min,
+  max,
+  step,
+  autocomplete,
+  autofocus = false,
+  maxlength,
+  minlength,
+  pattern,
+  icon,
+  iconPosition = 'left',
+  error,
+} = Astro.props;
+
+// Base classes
+const baseClasses = 'transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2';
+
+// Size classes
+const sizeClasses = {
+  sm: 'h-8 text-sm px-3 py-1',
+  md: 'h-10 text-base px-4 py-2',
+  lg: 'h-12 text-lg px-6 py-3',
+}[size];
+
+// Variant classes
+const variantClasses = {
+  default: 'border border-gray-300 rounded-md bg-white',
+  outline: 'border-2 border-gray-300 rounded-md bg-transparent',
+  filled: 'border border-transparent bg-gray-100 rounded-md',
+}[variant];
+
+// State classes
+const stateClasses = [
+  disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-400',
+  error ? 'border-red-500 focus:ring-red-500' : '',
+].filter(Boolean).join(' ');
+
+// Width classes
+const widthClasses = fullWidth ? 'w-full' : '';
+
+// Combine all classes
+const classes = [
+  baseClasses,
+  sizeClasses,
+  variantClasses,
+  stateClasses,
+  widthClasses,
+  className,
+].filter(Boolean).join(' ');
+
+// Prepare input attributes
+const inputAttributes = {
+  type,
+  name,
+  id,
+  placeholder,
+  value,
+  class: classes,
+  required,
+  disabled,
+  readonly,
+  min,
+  max,
+  step,
+  autocomplete,
+  autofocus,
+  maxlength,
+  minlength,
+  pattern,
+};
+---
+
+<div class={`relative ${fullWidth ? 'w-full' : ''}`}>
+  {icon && iconPosition === 'left' && (
+    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+      <i class={`${icon} text-gray-400`}></i>
+    </div>
+  )}
+
+  <input {...inputAttributes} />
+
+  {icon && iconPosition === 'right' && (
+    <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+      <i class={`${icon} text-gray-400`}></i>
+    </div>
+  )}
+
+  {error && (
+    <p class="mt-1 text-sm text-red-500">{error}</p>
+  )}
+</div> 

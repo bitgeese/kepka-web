@@ -32,7 +32,7 @@ type Link = {
   id: string;
   description: string;
   url: string;
-  type: 'Article' | 'Video' | 'Auction'; 
+  type: 'Article' | 'Video' | 'Auction' | 'Social'; 
 }
 
 // Updated to properly reflect actual structure from API

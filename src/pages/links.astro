@@ -4,59 +4,77 @@ import { fetchLinks } from '../lib/directus';
 import LinkPreview from '../components/LinkPreview.astro';
 import PageTitle from '../components/PageTitle.astro';
 
+// Define types
+type LinkType = 'Article' | 'Video' | 'Auction' | 'Social';
+type DisplayType = 'press' | 'video' | 'social' | 'other';
+
+interface Link {
+  id: string;
+  url: string;
+  description?: string;
+  title?: string;
+  image?: string;
+  type: LinkType;
+  position?: number;
+}
+
 // Fetch all links
 const allLinks = await fetchLinks();
 console.log('Fetched links:', allLinks);
 
 // Add missing properties to links
-const enhancedLinks = allLinks.map(link => {
+const enhancedLinks: Link[] = allLinks.map(link => {
+  const typedLink = link as Link;
+  
   // Create title from domain if not present
-  if (!link.title) {
-    const domain = new URL(link.url.trim()).hostname.replace('www.', '');
-    link.title = `Article from ${domain}`;
+  if (!typedLink.title) {
+    const domain = new URL(typedLink.url.trim()).hostname.replace('www.', '');
+    typedLink.title = `Article from ${domain}`;
   }
   
   // Add position if not present
-  if (!link.position) {
-    link.position = 1;
+  if (!typedLink.position) {
+    typedLink.position = 1;
   }
   
-  return link;
+  return typedLink;
 });
 
 // Group links by type and sort by position
-const linksByType = enhancedLinks.reduce((groups, link) => {
+const linksByType: Record<LinkType, Link[]> = enhancedLinks.reduce((groups, link) => {
   const { type } = link;
   if (!groups[type]) {
     groups[type] = [];
   }
   groups[type].push(link);
   return groups;
-}, {});
+}, {} as Record<LinkType, Link[]>);
 
 // Sort each group by position
 Object.keys(linksByType).forEach(type => {
-  linksByType[type].sort((a, b) => a.position - b.position);
+  linksByType[type as LinkType].sort((a, b) => (a.position || 0) - (b.position || 0));
 });
 
 // Define types in the order you want them displayed
-const typeOrder = ["press", "video", "other"];
+const typeOrder: DisplayType[] = ["press", "video", "social", "other"];
 
 // Map API types to display types
-const typeMapping = {
+const typeMapping: Record<LinkType, DisplayType> = {
   'Article': 'press',
   'Video': 'video',
-  'Auction': 'other'
+  'Auction': 'other',
+  "Social": "social",
 };
 
 // Create mapped links by display type
-const mappedLinksByType = {};
+const mappedLinksByType: Record<DisplayType, Link[]> = {} as Record<DisplayType, Link[]>;
 Object.keys(linksByType).forEach(apiType => {
-  const displayType = typeMapping[apiType] || 'other';
+  const typedApiType = apiType as LinkType;
+  const displayType = typeMapping[typedApiType] || 'other';
   if (!mappedLinksByType[displayType]) {
     mappedLinksByType[displayType] = [];
   }
-  mappedLinksByType[displayType] = mappedLinksByType[displayType].concat(linksByType[apiType]);
+  mappedLinksByType[displayType] = mappedLinksByType[displayType].concat(linksByType[typedApiType]);
 });
 
 console.log('Enhanced links by type:', mappedLinksByType);
@@ -87,7 +105,9 @@ console.log('Enhanced links by type:', mappedLinksByType);
         <section class="mb-20">
           <h2 class="uppercase text-2xl font-bold mb-10">
             {type === "press" ? "Press Coverage" : 
-              type === "video" ? "Video Features" : "Other Resources"}
+             type === "video" ? "Video Features" : 
+             type === "social" ? "Social Media" : 
+             "Other Resources"}
           </h2>
           
           <div class="space-y-10">

@@ -1,0 +1,54 @@
+---
+interface Props {
+  class?: string;
+  sticky?: boolean;
+  transparent?: boolean;
+  dark?: boolean;
+}
+
+const {
+  class: className = '',
+  sticky = false,
+  transparent = false,
+  dark = false
+} = Astro.props;
+
+// Base classes
+const baseClasses = "w-full py-4 z-50";
+
+// Position classes
+const positionClasses = sticky ? "sticky top-0" : "relative";
+
+// Background classes
+const bgClasses = transparent 
+  ? "bg-transparent" 
+  : dark 
+    ? "bg-black text-white" 
+    : "bg-white text-black";
+
+// Combined classes
+const classes = [
+  baseClasses,
+  positionClasses,
+  bgClasses,
+  className
+].join(' ');
+---
+
+<header class={classes}>
+  <div class="container mx-auto px-4 flex items-center justify-between">
+    <div class="flex-shrink-0">
+      <slot name="logo" />
+    </div>
+
+    <nav class="hidden md:flex items-center space-x-6">
+      <slot name="navigation" />
+    </nav>
+
+    <div class="flex items-center">
+      <slot name="actions" />
+    </div>
+  </div>
+  
+  <slot />
+</header> 

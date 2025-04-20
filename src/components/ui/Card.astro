@@ -1,0 +1,70 @@
+---
+export interface Props {
+  class?: string;
+  variant?: 'default' | 'outline' | 'shadow' | 'flat';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  rounded?: 'none' | 'sm' | 'md' | 'lg' | 'full';
+  bordered?: boolean;
+  hoverable?: boolean;
+  as?: string;
+}
+
+const {
+  class: className = '',
+  variant = 'default',
+  padding = 'md',
+  rounded = 'md',
+  bordered = false,
+  hoverable = false,
+  as: Element = 'div',
+} = Astro.props;
+
+// Base classes
+const baseClasses = 'relative';
+
+// Variant classes
+const variantClasses = {
+  default: 'bg-white',
+  outline: 'bg-white border border-gray-200',
+  shadow: 'bg-white shadow-md',
+  flat: 'bg-gray-50',
+}[variant as keyof typeof variantClasses];
+
+// Padding classes
+const paddingClasses = {
+  none: '',
+  sm: 'p-3',
+  md: 'p-4',
+  lg: 'p-6',
+}[padding as keyof typeof paddingClasses];
+
+// Rounded classes
+const roundedClasses = {
+  none: 'rounded-none',
+  sm: 'rounded-sm',
+  md: 'rounded-md',
+  lg: 'rounded-lg',
+  full: 'rounded-full',
+}[rounded as keyof typeof roundedClasses];
+
+// Border classes
+const borderClasses = bordered && variant !== 'outline' ? 'border border-gray-200' : '';
+
+// Hover classes
+const hoverClasses = hoverable ? 'transition-shadow hover:shadow-lg' : '';
+
+// Combine all classes
+const classes = [
+  baseClasses,
+  variantClasses,
+  paddingClasses,
+  roundedClasses,
+  borderClasses,
+  hoverClasses,
+  className,
+].filter(Boolean).join(' ');
+---
+
+<Element class={classes}>
+  <slot />
+</Element> 
