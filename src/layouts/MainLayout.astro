@@ -46,12 +46,15 @@ const currentPath = Astro.url.pathname;
     </style>
   </head>
   <body class="selection:bg-electric-red selection:text-white">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:p-4 focus:bg-background focus:text-foreground">
+      Skip to main content
+    </a>
     <ThemeProvider client:load>
       <!-- Extremely subtle noise texture -->
       <div class="fixed inset-0 pointer-events-none bg-noise opacity-[0.005] z-[-1]"></div>
       
       <!-- Main content -->
-      <main class="mx-auto relative w-full">
+      <main id="main-content" class="mx-auto relative w-full">
         <slot />
       </main>
       
