@@ -55,73 +55,80 @@ export function LatestPhotoshoots({ photoshoots }) {
       {/* Subtle top divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-foreground opacity-10"></div>
       
-      <div className="container mx-auto px-6 lg:px-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <SectionHeading title="Latest Work" />
         
         {/* Dynamic layout with rows of varying column counts */}
-        <div className="flex flex-col gap-16">
-          {arrangedPhotoshoots.map((row, rowIndex) => (
-            <div key={rowIndex} className={`grid grid-cols-1 md:grid-cols-${row.length} gap-8 md:gap-12`}>
-              {row.map((photoshoot, index) => {
-                const imageUrl = getFirstImageUrl(photoshoot);
-                return (
-                  <a 
-                    key={photoshoot.id || `${rowIndex}-${index}`} 
-                    href={`/photoshoots/${photoshoot.slug}`} 
-                    className="group relative overflow-hidden"
-                  >
-                    <div className={`
-                      relative w-full overflow-hidden
-                      transition-all duration-500 group-hover:border-electric-red
-                      ${row.length === 1 ? 'aspect-[16/9]' : 'aspect-[3/4]'}
-                    `}>
-                      {imageUrl ? (
-                        <CloudinaryImage
-                          publicId={imageUrl}
-                          alt={photoshoot.title}
-                          className="w-full h-full object-cover object-top transition-all duration-1000"
-                          grayscale={false}
-                          crop="fill"
-                          gravity="north"
-                          fallback={imageUrl}
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center w-full h-full bg-muted">
-                          <span className="text-muted-foreground">No image available</span>
-                        </div>
-                      )}
-                      
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        <div className="absolute bottom-0 left-0 w-full p-8">
-                          <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">{photoshoot.title}</h3>
-                          <time className="text-sm text-white/70 block" dateTime={photoshoot.date_created}>
-                            {new Date(photoshoot.date_created).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'long'
-                            })}
-                          </time>
-                          
-                          {/* Description preview (only for single-column items) */}
-                          {row.length === 1 && photoshoot.description && (
-                            <p className="mt-4 text-white/80 line-clamp-2">
-                              {stripMarkdown(photoshoot.description)}
-                            </p>
-                          )}
+        <div className="flex flex-col gap-12 md:gap-16">
+          {arrangedPhotoshoots.map((row, rowIndex) => {
+            // Create appropriate grid classes based on row length instead of using dynamic class names
+            const gridClass = row.length === 1 
+              ? "grid grid-cols-1 gap-8" 
+              : "grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12";
+              
+            return (
+              <div key={rowIndex} className={gridClass}>
+                {row.map((photoshoot, index) => {
+                  const imageUrl = getFirstImageUrl(photoshoot);
+                  return (
+                    <a 
+                      key={photoshoot.id || `${rowIndex}-${index}`} 
+                      href={`/photoshoots/${photoshoot.slug}`} 
+                      className="group relative overflow-hidden"
+                    >
+                      <div className={`
+                        relative w-full overflow-hidden
+                        transition-all duration-500 group-hover:border-electric-red
+                        ${row.length === 1 ? 'aspect-[16/9]' : 'aspect-[3/4]'}
+                      `}>
+                        {imageUrl ? (
+                          <CloudinaryImage
+                            publicId={imageUrl}
+                            alt={photoshoot.title}
+                            className="w-full h-full object-cover object-top transition-all duration-1000"
+                            grayscale={false}
+                            crop="fill"
+                            gravity="north"
+                            fallback={imageUrl}
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center w-full h-full bg-muted">
+                            <span className="text-muted-foreground">No image available</span>
+                          </div>
+                        )}
+                        
+                        {/* Hover overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8">
+                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">{photoshoot.title}</h3>
+                            <time className="text-sm text-white/70 block" dateTime={photoshoot.date_created}>
+                              {new Date(photoshoot.date_created).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long'
+                              })}
+                            </time>
+                            
+                            {/* Description preview (only for single-column items) */}
+                            {row.length === 1 && photoshoot.description && (
+                              <p className="mt-4 text-white/80 line-clamp-2">
+                                {stripMarkdown(photoshoot.description)}
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          ))}
+                    </a>
+                  );
+                })}
+              </div>
+            );
+          })}
         </div>
         
-        <div className="mt-20 text-center">
+        <div className="mt-16 md:mt-20 text-center">
           <a 
             href="/photoshoots" 
-            className="inline-block px-10 py-4 border-2 font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
+            className="inline-block px-8 sm:px-10 py-3 sm:py-4 border-2 font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
             style={{ borderColor: 'var(--foreground)' }}
           >
             View All Photoshoots

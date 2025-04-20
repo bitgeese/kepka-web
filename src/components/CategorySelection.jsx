@@ -37,19 +37,19 @@ export function CategorySelection({ kepkaData }) {
   ];
 
   return (
-    <section className="py-24 relative">
+    <section className="py-16 sm:py-20 md:py-24 relative">
       {/* Subtle top divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-foreground opacity-10"></div>
       
-      <div className="container mx-auto px-6 lg:px-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-16">
         <SectionHeading title="Explore Categories" />
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {categories.map((category, index) => (
             <a 
               key={index} 
               href={category.href}
-              className="group relative overflow-hidden"
+              className="group relative overflow-hidden w-full"
             >
               <div className="relative w-full aspect-square overflow-hidden border-2 border-transparent group-hover:border-electric-red transition-all duration-500">
                 {category.image ? (
@@ -72,9 +72,9 @@ export function CategorySelection({ kepkaData }) {
                 )}
                 
                 {/* Simple background for text that works on all images */}
-                <div className="absolute left-0 top-0 p-4 z-10">
-                  <span className="inline-block bg-black bg-opacity-50 px-3 pt-1.5 pb-0.5">
-                    <h3 className="text-3xl font-formula-condensed font-black text-white">
+                <div className="absolute left-0 top-0 p-3 sm:p-4 z-10">
+                  <span className="inline-block bg-black bg-opacity-50 px-2 sm:px-3 pt-1 sm:pt-1.5 pb-0.5">
+                    <h3 className="text-2xl sm:text-3xl font-formula-condensed font-black text-white">
                       {category.title}
                     </h3>
                   </span>
