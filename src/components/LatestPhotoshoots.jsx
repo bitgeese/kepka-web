@@ -38,7 +38,7 @@ export function LatestPhotoshoots({ photoshoots }) {
     return (
       <section className="py-20 relative">
         <div className="container mx-auto px-6 lg:px-16 text-center">
-          <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tighter mb-4">Latest Work</h2>
+          <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-4">Latest Work</h2>
           <div className="w-24 h-1 bg-electric-red mx-auto mb-8"></div>
           <p>No photoshoots available at the moment.</p>
         </div>
@@ -57,7 +57,7 @@ export function LatestPhotoshoots({ photoshoots }) {
       
       <div className="container mx-auto px-6 lg:px-16">
         <header className="mb-16">
-          <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tighter mb-4">Latest Work</h2>
+          <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tight mb-4">Latest Work</h2>
           <div className="w-24 h-1 bg-electric-red"></div>
         </header>
         
@@ -97,7 +97,7 @@ export function LatestPhotoshoots({ photoshoots }) {
                       {/* Hover overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                         <div className="absolute bottom-0 left-0 w-full p-8">
-                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{photoshoot.title}</h3>
+                          <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">{photoshoot.title}</h3>
                           <time className="text-sm text-white/70 block" dateTime={photoshoot.date_created}>
                             {new Date(photoshoot.date_created).toLocaleDateString('en-US', {
                               year: 'numeric',

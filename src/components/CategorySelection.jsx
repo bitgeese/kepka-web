@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { CloudinaryImage } from './ui/CloudinaryImage';
+import { getAssetUrl } from '../lib/directus';
 
 export function CategorySelection({ kepkaData }) {
   // Debug in development to see the structure of the data
@@ -18,16 +19,19 @@ export function CategorySelection({ kepkaData }) {
       title: "PHOTOSHOOTS",
       image: kepkaData?.photoshoots_cover || '',
       href: "/photoshoots",
+      gravity: "auto",
     },
     {
       title: "ARTWORKS",
       image: kepkaData?.paintings_cover || '',
       href: "/artworks",
+      gravity: "center", // Use center gravity for artwork images
     },
     {
       title: "SHOP",
       image: kepkaData?.products_cover || '',
       href: "/shop",
+      gravity: "auto",
     }
   ];
 
@@ -38,7 +42,7 @@ export function CategorySelection({ kepkaData }) {
       
       <div className="container mx-auto px-6 lg:px-16">
         <header className="mb-16">
-          <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tighter mb-4">Explore Categories</h2>
+          <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tight mb-4">Explore Categories</h2>
         </header>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
@@ -48,13 +52,18 @@ export function CategorySelection({ kepkaData }) {
               href={category.href}
               className="group relative overflow-hidden"
             >
-              <div className="relative w-full aspect-[3/4] overflow-hidden border-2 border-transparent group-hover:border-electric-red transition-all duration-500">
+              <div className="relative w-full aspect-square overflow-hidden border-2 border-transparent group-hover:border-electric-red transition-all duration-500">
                 {category.image ? (
                   <div className="w-full h-full">
-                    <img 
-                      src={category.image}
+                    <CloudinaryImage 
+                      publicId={getAssetUrl(category.image)}
                       alt={category.title}
                       className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
+                      grayscale={false}
+                      crop="fill"
+                      gravity={category.gravity}
+                      quality={90}
+                      client:load
                     />
                   </div>
                 ) : (

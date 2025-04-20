@@ -69,12 +69,12 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
 ---
 
 <MainLayout title={productTitle}>
-  <main class="bg-white dark:bg-black py-12">
-    <div class="container mx-auto px-6 lg:px-16">
+  <main class="bg-white dark:bg-black py-12 min-h-screen flex flex-col">
+    <div class="container mx-auto px-6 lg:px-16 flex-grow">
       {product ? (
         <div>
           <div class="mb-12">
-            <h1 class="text-3xl md:text-4xl font-display font-bold tracking-tighter mb-4">
+            <h1 class="text-3xl md:text-4xl font-display font-bold tracking-tight mb-4">
               {productTitle}
             </h1>
             <a 
@@ -186,7 +186,7 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
           {/* Fashion Shows / Photoshoots section */}
           {hasPhotoshoots && (
             <div class="mt-16 pt-12 border-t border-gray-200 dark:border-gray-800">
-              <h2 class="text-2xl md:text-3xl font-display font-bold tracking-tighter mb-8">
+              <h2 class="text-2xl md:text-3xl font-display font-bold tracking-tight mb-8">
                 As Seen In These Shows
               </h2>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

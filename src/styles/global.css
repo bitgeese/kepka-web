@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -154,15 +155,20 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Suisse Int\'l', system-ui, sans-serif;
+    font-family: 'Libre Baskerville', Georgia, serif;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Impact', 'Arial Black', sans-serif;
-    @apply font-bold tracking-tighter;
+    @apply font-bold tracking-tight;
   }
   
-  /* Apply monospaced font to buttons, description texts, and navigation */
+  /* Apply Baskerville font to buttons, description texts, and navigation */
   button, .btn, nav, .nav-item, .description, p, a, li {
+    font-family: 'Libre Baskerville', Georgia, serif;
+  }
+  
+  /* Apply code font only to code blocks */
+  code, pre {
     font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
   }
   

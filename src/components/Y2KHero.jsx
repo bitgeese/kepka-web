@@ -83,7 +83,7 @@ export function Y2KHero({ kepkaData }) {
           </div>
 
           <h1 
-            className="text-[7rem] leading-[0.85] font-display text-center font-bold tracking-tighter mb-8"
+            className="text-[7rem] leading-[0.85] font-display text-center font-bold tracking-tight mb-8"
           >
             JAKUB KĘPKA
           </h1>

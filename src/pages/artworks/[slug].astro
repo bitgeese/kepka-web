@@ -50,8 +50,8 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
 ---
 
 <MainLayout title={artwork.title}>
-  <main class="bg-white dark:bg-black py-12">
-    <div class="container mx-auto px-6 lg:px-16">
+  <main class="bg-white dark:bg-black py-12 min-h-screen flex flex-col">
+    <div class="container mx-auto px-6 lg:px-16 flex-grow">
       <div class="mb-8">
         <a 
           href="/artworks" 
@@ -87,7 +87,7 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
         {/* Artwork information - like a museum plaque */}
         <div class="lg:w-1/4 max-w-md">
           <div class="sticky top-8">
-            <h1 class="text-3xl font-display font-bold tracking-tighter mb-2">
+            <h1 class="text-3xl font-display font-bold tracking-tight mb-2">
               {artwork.title}
             </h1>
             <time class="text-sm opacity-75 block mb-4" datetime={artwork.date_created}>
@@ -106,7 +106,7 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
       {/* Additional artwork images gallery - only shown if images exist */}
       {artwork.images && Array.isArray(artwork.images) && artwork.images.length > 0 && (
         <div class="mt-20">
-          <h2 class="text-2xl font-display font-bold tracking-tighter mb-8">Additional Views</h2>
+          <h2 class="text-2xl font-display font-bold tracking-tight mb-8">Additional Views</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {artwork.images.map((image: string, index: number) => (
               <div 
