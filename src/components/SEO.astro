@@ -1,0 +1,82 @@
+---
+import { generateDesignerData } from '../utils/structuredData';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  image?: string;
+  type?: 'website' | 'article' | 'product';
+  structuredData?: object;
+  pageType?: 'home' | 'product' | 'photoshoot' | 'about' | 'contact';
+  pageData?: any;
+}
+
+// Default SEO values
+const DEFAULT_TITLE = "Jakub Kepka";
+const DEFAULT_DESCRIPTION = "Jakub Kepka - Fashion Designer and Creative Director based in Warsaw, Poland. Explore my latest collections, photoshoots, and fashion designs.";
+const DEFAULT_KEYWORDS = "Jakub Kepka, fashion designer, Warsaw, Poland, fashion collections, photoshoots, designer clothing";
+
+// Merge provided props with defaults
+const { 
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  canonicalUrl = Astro.url.href,
+  image,
+  type = "website",
+  structuredData = {},
+  pageType = "home",
+  pageData
+} = Astro.props;
+
+// Format the title properly
+const formattedTitle = title === DEFAULT_TITLE 
+  ? title 
+  : `${title} | ${DEFAULT_TITLE}`;
+
+// Determine default structured data based on page type
+let defaultStructuredData = {};
+
+if (Object.keys(structuredData).length === 0) {
+  // By default, use the designer data for all pages
+  defaultStructuredData = generateDesignerData();
+  
+  // For specific page types, we'll import and use their specific generators
+  // in the page components where this SEO component is used
+}
+
+// Combine default and custom structured data
+const finalStructuredData = Object.keys(structuredData).length > 0 
+  ? structuredData 
+  : defaultStructuredData;
+---
+
+<!-- Primary Meta Tags -->
+<title>{formattedTitle}</title>
+<meta name="title" content={formattedTitle} />
+<meta name="description" content={description} />
+<meta name="keywords" content={DEFAULT_KEYWORDS} />
+<meta name="robots" content="index, follow" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={formattedTitle} />
+<meta property="og:description" content={description} />
+{image && <meta property="og:image" content={image} />}
+{image && <meta property="og:image:alt" content={formattedTitle} />}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalUrl} />
+<meta property="twitter:title" content={formattedTitle} />
+<meta property="twitter:description" content={description} />
+{image && <meta property="twitter:image" content={image} />}
+{image && <meta property="twitter:image:alt" content={formattedTitle} />}
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(finalStructuredData)}></script> 

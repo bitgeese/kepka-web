@@ -164,7 +164,7 @@
   /* Color Palette */
   --background: #FFFFFF;
   --foreground: #000000;
-  --primary: #E30029; /* Adjusted Electric Red for better accessibility */
+  --primary: #FF0030; /* Electric Red */
   --primary-foreground: #FFFFFF;
   --secondary: #363636; /* Industrial Gray */
   --secondary-foreground: #FFFFFF;
@@ -172,7 +172,7 @@
   --accent-foreground: #000000;
   
   /* Custom Colors */
-  --electric-red: #E30029; /* Adjusted for accessibility while maintaining brand identity */
+  --electric-red: #FF0030;
   --electric-blue: #00FFFF;
   
   /* UI Elements */
@@ -183,13 +183,13 @@
   --popover: var(--background);
   --popover-foreground: var(--foreground);
   --muted: #F0F0F0;
-  --muted-foreground: #666666; /* Darkened for better contrast */
+  --muted-foreground: #777777;
   --destructive: var(--primary);
   --input: var(--background);
   --ring: var(--primary);
   
   /* Chart Colors */
-  --chart-1: #E30029; /* Adjusted Electric Red */
+  --chart-1: #FF0030; /* Electric Red */
   --chart-2: #00FFFF; /* Digital Blue */
   --chart-3: #363636; /* Industrial Gray */
   --chart-4: #000000; /* Black */
@@ -209,15 +209,15 @@
 .dark {
   --background: #000000;
   --foreground: #FFFFFF;
-  --primary: #FF2D4D; /* Brightened Electric Red for dark mode for better visibility */
+  --primary: #FF0030; /* Electric Red */
   --primary-foreground: #000000;
   --secondary: #363636; /* Industrial Gray */
   --secondary-foreground: #FFFFFF;
   --accent: #00FFFF; /* Digital Blue */
   --accent-foreground: #000000;
   
-  /* Custom Colors - adjusted for accessibility in dark mode */
-  --electric-red: #FF2D4D;
+  /* Custom Colors - remains the same in dark mode */
+  --electric-red: #FF0030;
   --electric-blue: #00FFFF;
   
   /* UI Elements */
@@ -226,14 +226,14 @@
   --popover: var(--secondary);
   --popover-foreground: var(--foreground);
   --muted: #222222;
-  --muted-foreground: #AAAAAA; /* Lightened for better contrast in dark mode */
+  --muted-foreground: #999999;
   --destructive: var(--primary);
   --border: var(--foreground);
   --input: var(--secondary);
   --ring: var(--primary);
   
   /* Chart Colors */
-  --chart-1: #FF2D4D; /* Adjusted Electric Red */
+  --chart-1: #FF0030; /* Electric Red */
   --chart-2: #00FFFF; /* Digital Blue */
   --chart-3: #FFFFFF; /* White */
   --chart-4: #363636; /* Industrial Gray */
@@ -594,5 +594,20 @@
   }
   .hover\:border-electric-red:hover {
     border-color: var(--electric-red) !important;
+  }
+  .bg-electric-blue {
+    background-color: var(--electric-blue);
+  }
+  .text-electric-blue {
+    color: var(--electric-blue);
+  }
+  .border-electric-blue {
+    border-color: var(--electric-blue);
+  }
+  .hover\:text-electric-blue:hover {
+    color: var(--electric-blue) !important;
+  }
+  .hover\:border-electric-blue:hover {
+    border-color: var(--electric-blue) !important;
   }
 }
