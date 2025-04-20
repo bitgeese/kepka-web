@@ -541,37 +541,22 @@
   .bg-electric-red {
     background-color: var(--electric-red);
   }
-  .bg-electric-blue {
-    background-color: var(--electric-blue);
+  .hover\:bg-electric-blue:hover {
+    background-color: var(--electric-blue) !important;
   }
   .text-electric-red {
     color: var(--electric-red);
   }
-  .text-electric-blue {
-    color: var(--electric-blue);
-  }
   .border-electric-red {
     border-color: var(--electric-red);
   }
-  .border-electric-blue {
-    border-color: var(--electric-blue);
-  }
   .hover\:bg-electric-red:hover {
-    background-color: var(--electric-red);
-  }
-  .hover\:bg-electric-blue:hover {
-    background-color: var(--electric-blue);
+    background-color: var(--electric-red) !important;
   }
   .hover\:text-electric-red:hover {
-    color: var(--electric-red);
-  }
-  .hover\:text-electric-blue:hover {
-    color: var(--electric-blue);
+    color: var(--electric-red) !important;
   }
   .hover\:border-electric-red:hover {
-    border-color: var(--electric-red);
-  }
-  .hover\:border-electric-blue:hover {
-    border-color: var(--electric-blue);
+    border-color: var(--electric-red) !important;
   }
 }

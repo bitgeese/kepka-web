@@ -36,13 +36,27 @@ export function Y2KHero({ kepkaData }) {
           <div className="flex gap-6">
             <a 
               href="/shop" 
-              className="px-8 py-3 border-2 border-white font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
+              className="hero-btn border-2 border-white bg-transparent"
+              style={{
+                padding: '0.75rem 2rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                transition: 'all 0.3s ease'
+              }}
             >
               Shop My Designs
             </a>
             <a 
               href="/about" 
-              className="px-8 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300"
+              className="hero-btn bg-white text-black border-2 border-white"
+              style={{
+                padding: '0.75rem 2rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                transition: 'all 0.3s ease'
+              }}
             >
               About Me
             </a>
@@ -91,13 +105,27 @@ export function Y2KHero({ kepkaData }) {
           <div className="flex flex-col gap-4 w-full">
             <a 
               href="/shop" 
-              className="px-6 py-3 border-2 border-white font-bold uppercase tracking-wide bg-transparent hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300 text-center"
+              className="hero-btn border-2 border-white bg-transparent text-center"
+              style={{
+                padding: '0.75rem 1.5rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                transition: 'all 0.3s ease'
+              }}
             >
               Shop My Designs
             </a>
             <a 
               href="/about" 
-              className="px-6 py-3 font-bold uppercase tracking-wide bg-white text-black border-2 border-white hover:bg-electric-red hover:text-white hover:border-electric-red transition-all duration-300 text-center"
+              className="hero-btn bg-white text-black border-2 border-white text-center"
+              style={{
+                padding: '0.75rem 1.5rem',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                transition: 'all 0.3s ease'
+              }}
             >
               About Me
             </a>
@@ -129,6 +157,14 @@ export function Y2KHero({ kepkaData }) {
           </svg>
         </div>
       </div>
+      
+      <style jsx>{`
+        .hero-btn:hover {
+          background-color: var(--electric-red) !important;
+          color: white !important;
+          border-color: var(--electric-red) !important;
+        }
+      `}</style>
     </section>
   );
 } 
