@@ -75,8 +75,6 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
                 alt={artwork.title}
                 className="w-full h-auto object-contain max-h-[85vh]"
                 grayscale={false}
-                crop="scale"
-                gravity="auto"
                 fallback={getAssetUrl(artwork.cover)}
                 client:load
               />
@@ -118,8 +116,6 @@ const allImages = [mainImage, ...additionalImages].filter(Boolean);
                   alt={`${artwork.title} - Detail`}
                   className="w-full h-full object-contain transition-all duration-500"
                   grayscale={false}
-                  crop="scale"
-                  gravity="auto"
                   fallback={getAssetUrl(image)}
                   client:load
                 />
