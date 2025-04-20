@@ -1,23 +1,162 @@
 @import 'tailwindcss';
 @import "tw-animate-css";
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
-/* Font face declaration for JetBrains Mono */
+/* Font face declarations for Formula font */
 @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+  font-family: 'Formula';
+  src: url('/fonts/Formula/PPFormula-NarrowRegular.woff2') format('woff2'),
+       url('/fonts/Formula/PPFormula-NarrowRegular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
+  font-family: 'Formula';
+  src: url('/fonts/Formula/PPFormula-Medium.woff2') format('woff2'),
+       url('/fonts/Formula/PPFormula-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formula';
+  src: url('/fonts/Formula/PPFormula-MediumItalic.woff2') format('woff2'),
+       url('/fonts/Formula/PPFormula-MediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formula';
+  src: url('/fonts/Formula/PPFormula-ExtendedBold.woff2') format('woff2'),
+       url('/fonts/Formula/PPFormula-ExtendedBold.otf') format('opentype');
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formula';
+  src: url('/fonts/Formula/PPFormula-SemiExtendedBold.woff2') format('woff2'),
+       url('/fonts/Formula/PPFormula-SemiExtendedBold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-variant: semi-extended;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formula';
+  src: url('/fonts/Formula/PPFormula-Light.woff2') format('woff2'),
+       url('/fonts/Formula/PPFormula-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formula';
+  src: url('/fonts/Formula/PPFormula-CondensedBlack.woff2') format('woff2'),
+       url('/fonts/Formula/PPFormula-CondensedBlack.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-variant: condensed;
+  font-display: swap;
+}
+
+/* Font face declarations for ABC Laica font */
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-Light-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-Light-Trial.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-LightItalic-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-LightItalic-Trial.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-Book-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-Book-Trial.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-BookItalic-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-BookItalic-Trial.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-Regular-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-Regular-Trial.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-RegularItalic-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-RegularItalic-Trial.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-Medium-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-Medium-Trial.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-MediumItalic-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-MediumItalic-Trial.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-Bold-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-Bold-Trial.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ABC Laica';
+  src: url('/fonts/ABCLaica/ABCLaica-BoldItalic-Trial.woff2') format('woff2'),
+       url('/fonts/ABCLaica/ABCLaica-BoldItalic-Trial.otf') format('opentype');
+  font-weight: bold;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -147,6 +286,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: system-ui, sans-serif;
+  --font-serif: 'ABC Laica', system-ui, serif;
+  --font-mono: 'SF Mono', 'Courier New', 'Consolas', monospace;
 }
 
 @layer base {
@@ -154,22 +296,21 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Libre Baskerville', Georgia, serif;
+    @apply bg-background text-foreground font-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-family: 'Formula', sans-serif;
     @apply font-bold tracking-tight;
   }
   
-  /* Apply Baskerville font to buttons, description texts, and navigation */
+  /* Apply serif font to buttons, description texts, and navigation */
   button, .btn, nav, .nav-item, .description, p, a, li {
-    font-family: 'Libre Baskerville', Georgia, serif;
+    @apply font-serif;
   }
   
   /* Apply code font only to code blocks */
   code, pre {
-    font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace;
+    @apply font-mono;
   }
   
   /* Style for text selection - apply to all elements */
@@ -364,6 +505,36 @@
   /* Sharp dividers */
   hr {
     @apply border-foreground border-2;
+  }
+  
+  /* Custom font utility classes */
+  .font-formula {
+    font-family: 'Formula', sans-serif;
+  }
+  
+  .font-formula-extended {
+    font-family: 'Formula', sans-serif;
+    font-variant: extended;
+  }
+  
+  .font-formula-condensed {
+    font-family: 'Formula', sans-serif;
+    font-variant: condensed;
+  }
+  
+  .font-formula-black {
+    font-family: 'Formula', sans-serif;
+    font-weight: 900;
+  }
+  
+  .font-formula-condensed-black {
+    font-family: 'Formula', sans-serif;
+    font-variant: condensed;
+    font-weight: 900;
+  }
+  
+  .font-laica {
+    font-family: 'ABC Laica', system-ui, serif;
   }
   
   /* Custom color utility classes */

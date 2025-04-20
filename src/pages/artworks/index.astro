@@ -4,6 +4,7 @@ import { getAssetUrl } from "../../lib/directus";
 import { CloudinaryImage } from "../../components/ui/CloudinaryImage";
 import directus from "../../lib/directus";
 import { readItems, readSingleton } from "@directus/sdk";
+import PageHeader from "../../components/PageHeader.astro";
 
 // Artwork type definition
 interface Artwork {
@@ -32,6 +33,7 @@ const kepkaData = await directus.request(
 );
 
 const paintingsCover = kepkaData.paintings_cover;
+const coverImageUrl = paintingsCover ? getAssetUrl(paintingsCover) : null;
 
 // Page title
 const pageTitle = "Artworks | Jakub Kepka";
@@ -61,36 +63,11 @@ const getSizeClass = (index: number) => {
 
 <MainLayout title={pageTitle}>
   <main>
-    <!-- Masthead with Kepka paintings_cover image -->
-    <section class="py-24 bg-black text-white relative overflow-hidden">
-      {paintingsCover && (
-        <div class="absolute inset-0 z-0 opacity-30">
-          <CloudinaryImage
-            publicId={getAssetUrl(paintingsCover)}
-            alt="Artworks Cover"
-            className="w-full h-full object-cover object-top"
-            crop="scale"
-            gravity="auto"
-            fallback={getAssetUrl(paintingsCover)}
-            client:load
-          />
-        </div>
-      )}
-      <div class="container mx-auto px-6 lg:px-16 relative z-10">
-        <h1 class="text-6xl md:text-8xl font-display font-bold tracking-tight mb-4">
-          ARTWORKS
-        </h1>
-        <a 
-          href="/" 
-          class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white transition-colors"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-          </svg>
-          Back to home
-        </a>
-      </div>
-    </section>
+    <PageHeader 
+      title="ARTWORKS" 
+      coverImage={coverImageUrl} 
+      imageAlt="Artworks Cover"
+    />
     
     <!-- Artworks grid -->
     {artworks.length === 0 ? (

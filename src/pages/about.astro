@@ -2,6 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import { fetchKepka, getAssetUrl } from '../lib/directus';
 import { CloudinaryImage } from '../components/ui/CloudinaryImage';
+import PageTitle from '../components/PageTitle.astro';
 
 // Fetch the Kepka data to get description and bio_image
 const kepkaData = await fetchKepka();
@@ -14,9 +15,9 @@ const description = kepkaData?.description || '';
   <div class="container mx-auto px-6 lg:px-16">
     <div class="about-container">
       <div class="about-grid">
-        <!-- Left column with contact info -->
+        <!-- Left column with content -->
         <div class="left-column">
-          <h1 class="title">ABOUT</h1>
+          <PageTitle title="ABOUT" />
           
           <a 
             href="/" 
@@ -27,8 +28,6 @@ const description = kepkaData?.description || '';
             </svg>
             Back to home
           </a>
-          
-          <div class="diagonal-slash"></div>
           
           <div class="about-content">
             <p class="description">{description}</p>
@@ -81,38 +80,13 @@ const description = kepkaData?.description || '';
     position: relative;
   }
   
-  /* Dramatic oversized headline */
-  h1.title {
-    font-family: 'Eurostile Extended', system-ui, sans-serif;
-    font-size: clamp(5rem, 12vw, 10rem);
-    font-weight: 800;
-    line-height: 0.85;
-    margin-bottom: 6rem;
-    color: var(--foreground);
-    text-transform: uppercase;
-    letter-spacing: -0.05em;
-    position: relative;
-  }
-  
-  /* Diagonal slash for visual tension */
-  .diagonal-slash {
-    position: absolute;
-    width: 150%;
-    height: 1px;
-    background-color: var(--electric-red);
-    transform: rotate(-15deg);
-    top: 50%;
-    left: -25%;
-    z-index: -1;
-  }
-  
   /* About content styling */
   .about-content {
     margin-top: 2rem;
   }
   
   .description {
-    font-family: 'Suisse Int\'l', system-ui, sans-serif;
+    font-family: 'ABC Laica', system-ui, serif;
     font-size: 1.25rem;
     line-height: 1.6;
     color: var(--foreground);
@@ -166,12 +140,7 @@ const description = kepkaData?.description || '';
   }
   
   /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    h1.title {
-      font-size: clamp(4rem, 10vw, 8rem);
-      margin-bottom: 4rem;
-    }
-    
+  @media (max-width: 1024px) {    
     .diagonal-slash {
       width: 130%;
       left: -15%;
@@ -189,18 +158,8 @@ const description = kepkaData?.description || '';
       gap: 2rem;
     }
     
-    h1.title {
-      font-size: clamp(3.5rem, 15vw, 6rem);
-      margin-bottom: 3rem;
-    }
-    
     .description {
       font-size: 1.125rem;
-    }
-    
-    .diagonal-slash {
-      width: 120%;
-      left: -10%;
     }
     
     .right-column {
@@ -211,12 +170,7 @@ const description = kepkaData?.description || '';
     }
   }
   
-  @media (max-width: 480px) {
-    h1.title {
-      font-size: 3rem;
-      margin-bottom: 2rem;
-    }
-    
+  @media (max-width: 480px) {    
     .description {
       font-size: 1rem;
     }

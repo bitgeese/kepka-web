@@ -2,6 +2,7 @@
 import MainLayout from "../../layouts/MainLayout.astro";
 import { fetchPhotoshoots, fetchKepka, getAssetUrl } from "../../lib/directus";
 import { CloudinaryImage } from "../../components/ui/CloudinaryImage";
+import PageHeader from "../../components/PageHeader.astro";
 
 // Fetch all photoshoots
 const photoshoots = await fetchPhotoshoots(100); // Get all photoshoots up to 100
@@ -28,54 +29,11 @@ const pageTitle = "Photoshoots | " + (kepkaData?.title || "Jakub Kepka");
 
 <MainLayout title={pageTitle}>
   <main>
-    <!-- Hero section with cover image -->
-    {coverImageUrl && (
-      <div class="relative h-[50vh] min-h-[400px] overflow-hidden">
-        <CloudinaryImage
-          publicId={coverImageUrl}
-          alt="Photoshoots Cover"
-          className="absolute inset-0 w-full h-full object-cover object-top"
-          quality={90}
-          crop="fill"
-          gravity="center"
-          client:load
-        />
-        <div class="absolute inset-0 bg-black/60 flex items-center">
-          <div class="container mx-auto px-6 lg:px-16">
-            <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight mb-4 text-white">
-              PHOTOSHOOTS
-            </h1>
-            <a 
-              href="/" 
-              class="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-              </svg>
-              Back to home
-            </a>
-          </div>
-        </div>
-      </div>
-    )}
-
-    <!-- If no cover image, show simple header -->
-    {!coverImageUrl && (
-      <div class="container mx-auto px-6 lg:px-16 pt-24 pb-12">
-        <h1 class="text-5xl md:text-7xl font-display font-bold tracking-tight mb-4">
-          PHOTOSHOOTS
-        </h1>
-        <a 
-          href="/" 
-          class="inline-flex items-center gap-2 text-sm hover:text-electric-red transition-colors mb-12"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-          </svg>
-          Back to home
-        </a>
-      </div>
-    )}
+    <PageHeader 
+      title="PHOTOSHOOTS" 
+      coverImage={coverImageUrl} 
+      imageAlt="Photoshoots Cover"
+    />
 
     <!-- Photoshoots grid -->
     <div class="container mx-auto px-6 lg:px-16 py-16">

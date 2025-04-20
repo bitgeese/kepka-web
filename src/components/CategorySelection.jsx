@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { CloudinaryImage } from './ui/CloudinaryImage';
 import { getAssetUrl } from '../lib/directus';
+import { SectionHeading } from './SectionHeading';
 
 export function CategorySelection({ kepkaData }) {
   // Debug in development to see the structure of the data
@@ -41,9 +42,7 @@ export function CategorySelection({ kepkaData }) {
       <div className="absolute top-0 left-0 right-0 h-px bg-foreground opacity-10"></div>
       
       <div className="container mx-auto px-6 lg:px-16">
-        <header className="mb-16">
-          <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tight mb-4">Explore Categories</h2>
-        </header>
+        <SectionHeading title="Explore Categories" />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
           {categories.map((category, index) => (
@@ -74,8 +73,8 @@ export function CategorySelection({ kepkaData }) {
                 
                 {/* Simple background for text that works on all images */}
                 <div className="absolute left-0 top-0 p-4 z-10">
-                  <span className="inline-block bg-black bg-opacity-50 px-3 py-1">
-                    <h3 className="text-3xl font-bold font-display tracking-tight text-white">
+                  <span className="inline-block bg-black bg-opacity-50 px-3 pt-1.5 pb-0.5">
+                    <h3 className="text-3xl font-formula-condensed font-black text-white">
                       {category.title}
                     </h3>
                   </span>

@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="relative mb-24 md:mb-16">
+  <h1 class="font-formula-condensed font-black text-[clamp(3rem,12vw,10rem)] leading-[0.85] text-foreground uppercase tracking-tight relative">
+    {title}
+  </h1>
+  <div class="absolute w-[150%] h-px bg-electric-red transform -rotate-15 top-1/2 -left-1/4 -z-10"></div>
+</div>
+
+<style>
+  .-rotate-15 {
+    transform: rotate(-15deg);
+  }
+</style> 

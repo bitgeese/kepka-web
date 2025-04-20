@@ -18,19 +18,19 @@ export function Y2KHero({ kepkaData }) {
           <div className="flex items-center mb-6">
             <div className="w-1 h-16 bg-electric-red mr-4"></div>
             <div>
-              <h2 className="text-base uppercase tracking-widest mb-1 font-bold">
+              <h2 className="text-base uppercase tracking-widest mb-1 font-formula font-bold">
                 Fashion Designer
               </h2>
-              <p className="text-sm opacity-75">
+              <p className="text-sm opacity-75 font-serif">
                 Warsaw, Poland
               </p>
             </div>
           </div>
 
           <h1 
-            className="text-[12rem] leading-[0.85] font-display font-bold tracking-tight mb-12"
+            className="text-[12rem] leading-[0.85] font-formula-condensed-black tracking-tight mb-12"
           >
-            JAKUB<br />KĘPKA
+            JAKUB KĘPKA
           </h1>
           
           <div className="flex gap-6">
@@ -73,17 +73,17 @@ export function Y2KHero({ kepkaData }) {
           <div className="flex items-center mb-6">
             <div className="w-1 h-12 bg-electric-red mr-3"></div>
             <div>
-              <h2 className="text-sm uppercase tracking-widest mb-0.5 font-bold">
+              <h2 className="text-sm uppercase tracking-widest mb-0.5 font-formula font-bold">
                 Fashion Designer
               </h2>
-              <p className="text-xs opacity-75">
+              <p className="text-xs opacity-75 font-serif">
                 Warsaw, Poland
               </p>
             </div>
           </div>
 
           <h1 
-            className="text-[7rem] leading-[0.85] font-display text-center font-bold tracking-tight mb-8"
+            className="text-[7rem] leading-[0.85] font-formula-condensed-black text-center tracking-tight mb-8"
           >
             JAKUB KĘPKA
           </h1>
@@ -122,7 +122,7 @@ export function Y2KHero({ kepkaData }) {
       {/* Scroll indicator - only on desktop */}
       <div className="absolute bottom-8 left-0 right-0 hidden md:flex justify-center">
         <div className="animate-bounce flex flex-col items-center opacity-80">
-          <span className="text-xs uppercase tracking-wider mb-2 font-mono">Scroll</span>
+          <span className="text-xs uppercase tracking-wider mb-2 font-serif">Scroll</span>
           <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" strokeWidth="2"/>
             <circle cx="8" cy="8" r="3" fill="currentColor" className="animate-pulse"/>

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { CloudinaryImage } from './ui/CloudinaryImage';
+import { SectionHeading } from './SectionHeading';
 
 export function LatestPhotoshoots({ photoshoots }) {
   // Debug in development to see the structure of the data
@@ -38,8 +39,7 @@ export function LatestPhotoshoots({ photoshoots }) {
     return (
       <section className="py-20 relative">
         <div className="container mx-auto px-6 lg:px-16 text-center">
-          <h2 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-4">Latest Work</h2>
-          <div className="w-24 h-1 bg-electric-red mx-auto mb-8"></div>
+          <SectionHeading title="Latest Work" />
           <p>No photoshoots available at the moment.</p>
         </div>
       </section>
@@ -56,10 +56,7 @@ export function LatestPhotoshoots({ photoshoots }) {
       <div className="absolute top-0 left-0 right-0 h-px bg-foreground opacity-10"></div>
       
       <div className="container mx-auto px-6 lg:px-16">
-        <header className="mb-16">
-          <h2 className="text-5xl md:text-6xl font-display font-bold tracking-tight mb-4">Latest Work</h2>
-          <div className="w-24 h-1 bg-electric-red"></div>
-        </header>
+        <SectionHeading title="Latest Work" />
         
         {/* Dynamic layout with rows of varying column counts */}
         <div className="flex flex-col gap-16">

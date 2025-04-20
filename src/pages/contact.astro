@@ -2,6 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import { fetchKepka, getAssetUrl } from '../lib/directus';
 import { CloudinaryImage } from '../components/ui/CloudinaryImage';
+import PageTitle from '../components/PageTitle.astro';
 
 // Fetch the Kepka data to get bio_image, contact_email and phone
 const kepkaData = await fetchKepka();
@@ -17,7 +18,7 @@ const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
       <div class="contact-grid">
         <!-- Left column with contact info -->
         <div class="left-column">
-          <h1 class="title">CONTACT</h1>
+          <PageTitle title="CONTACT" />
           
           <a 
             href="/" 
@@ -28,8 +29,6 @@ const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
             </svg>
             Back to home
           </a>
-          
-          <div class="diagonal-slash"></div>
           
           <div class="contact-details">
             <div class="contact-item">
@@ -95,31 +94,6 @@ const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
     position: relative;
   }
   
-  /* Dramatic oversized headline */
-  h1.title {
-    font-family: 'Eurostile Extended', system-ui, sans-serif;
-    font-size: clamp(5rem, 12vw, 10rem);
-    font-weight: 800;
-    line-height: 0.85;
-    margin-bottom: 6rem;
-    color: var(--foreground);
-    text-transform: uppercase;
-    letter-spacing: -0.05em;
-    position: relative;
-  }
-  
-  /* Diagonal slash for visual tension */
-  .diagonal-slash {
-    position: absolute;
-    width: 150%;
-    height: 1px;
-    background-color: var(--electric-red);
-    transform: rotate(-15deg);
-    top: 50%;
-    left: -25%;
-    z-index: -1;
-  }
-  
   /* Contact details styling */
   .contact-details {
     display: flex;
@@ -142,7 +116,7 @@ const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
   }
   
   .value {
-    font-family: 'Suisse Int\'l', system-ui, sans-serif;
+    font-family: 'ABC Laica', system-ui, serif;
     font-size: 1.5rem;
     color: var(--foreground);
     letter-spacing: -0.02em;
@@ -209,18 +183,6 @@ const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
   }
   
   /* Responsive adjustments */
-  @media (max-width: 1024px) {
-    h1.title {
-      font-size: clamp(4rem, 10vw, 8rem);
-      margin-bottom: 4rem;
-    }
-    
-    .diagonal-slash {
-      width: 130%;
-      left: -15%;
-    }
-  }
-  
   @media (max-width: 768px) {
     .contact-container {
       padding: 2rem 0;
@@ -232,18 +194,8 @@ const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
       gap: 2rem;
     }
     
-    h1.title {
-      font-size: clamp(3.5rem, 15vw, 6rem);
-      margin-bottom: 3rem;
-    }
-    
     .value {
       font-size: 1.25rem;
-    }
-    
-    .diagonal-slash {
-      width: 120%;
-      left: -10%;
     }
     
     .contact-details {
@@ -259,11 +211,6 @@ const phoneNumber = kepkaData?.contact_phone || '+44 7939 049940';
   }
   
   @media (max-width: 480px) {
-    h1.title {
-      font-size: 3rem;
-      margin-bottom: 2rem;
-    }
-    
     .contact-details {
       gap: 1.5rem;
     }

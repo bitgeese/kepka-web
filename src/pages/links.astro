@@ -2,6 +2,7 @@
 import MainLayout from '../layouts/MainLayout.astro';
 import { fetchLinks } from '../lib/directus';
 import LinkPreview from '../components/LinkPreview.astro';
+import PageTitle from '../components/PageTitle.astro';
 
 // Fetch all links
 const allLinks = await fetchLinks();
@@ -63,8 +64,8 @@ console.log('Enhanced links by type:', mappedLinksByType);
 
 <MainLayout title="Press">
   <div class="container mx-auto px-6 lg:px-16 pb-20">
-    <section class="mb-20">
-      <h1 class="text-[clamp(5rem,15vw,12rem)] leading-none font-bold mb-6">Press</h1>
+    <section class="mt-20">
+      <PageTitle title="PRESS" />
       
       <a 
         href="/" 
@@ -164,7 +165,7 @@ console.log('Enhanced links by type:', mappedLinksByType);
     line-height: 1.75rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    font-family: 'Eurostile Extended', system-ui, sans-serif;
+    font-family: 'ABC Laica', system-ui, serif;
     letter-spacing: -0.02em;
   }
   
@@ -180,7 +181,7 @@ console.log('Enhanced links by type:', mappedLinksByType);
     line-height: 1.5rem;
     margin-bottom: 1rem;
     color: #d1d5db;
-    font-family: 'Suisse Int\'l', system-ui, sans-serif;
+    font-family: 'ABC Laica', system-ui, serif;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
