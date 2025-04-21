@@ -115,16 +115,8 @@ export function Y2KHero({ kepkaData }) {
         </div>
       </div>
       
-      {/* Scroll indicator - only on desktop */}
-      <div className="absolute bottom-8 left-0 right-0 hidden md:flex justify-center">
-        <div className="animate-bounce flex flex-col items-center opacity-80">
-          <span className="text-xs uppercase tracking-wider mb-2 font-serif">Scroll</span>
-          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" strokeWidth="2"/>
-            <circle cx="8" cy="8" r="3" fill="currentColor" className="animate-pulse"/>
-          </svg>
-        </div>
-      </div>
+      
+      
     </section>
   );
 } 
