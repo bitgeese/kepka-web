@@ -115,8 +115,7 @@ export function Y2KHero({ kepkaData }) {
         </div>
       </div>
       
-      
-      
+  
     </section>
   );
 } 
