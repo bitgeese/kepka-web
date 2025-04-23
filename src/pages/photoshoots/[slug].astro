@@ -80,18 +80,20 @@ const hasProducts = photoshoot?.products && photoshoot.products.length > 0;
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {photoshoot.images.map((image: any, index: number) => (
               <div 
-                class="overflow-hidden cursor-pointer transition-transform duration-300 hover:shadow-lg"
+                class="overflow-hidden cursor-pointer transition-transform duration-300 hover:shadow-lg gallery-item"
                 onclick={`window.openLightbox(${index})`}
+                data-index={index}
               >
                 <CloudinaryImage 
                   publicId={getAssetUrl(image)} 
                   alt={`${photoshoot.title} - Photo ${index + 1}`}
                   className="w-full h-full object-contain object-center aspect-square transition-all duration-500"
                   grayscale={false}
-                  quality={85}
+                  quality={index < 6 ? 85 : 75}
                   crop="scale"
                   width={800}
-                  loading="eager"
+                  height={800}
+                  loading={index < 6 ? "eager" : "lazy"}
                   fallback={getAssetUrl(image)}
                   client:load
                 />
@@ -112,7 +114,7 @@ const hasProducts = photoshoot?.products && photoshoot.products.length > 0;
                   Items from this Collection
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                  {photoshoot.products.map((product: any) => (
+                  {photoshoot.products.map((product: any, index: number) => (
                     <a href={`/shop/${product.slug}`} class="group">
                       <div class="overflow-hidden mb-4 aspect-square">
                         {product.images && product.images.length > 0 && (
@@ -124,7 +126,8 @@ const hasProducts = photoshoot?.products && photoshoot.products.length > 0;
                             quality={80}
                             crop="scale"
                             width={400}
-                            loading="eager"
+                            height={400}
+                            loading={index < 4 ? "eager" : "lazy"}
                             fallback={getAssetUrl(product.images[0])}
                             client:load
                           />
@@ -151,7 +154,7 @@ const hasProducts = photoshoot?.products && photoshoot.products.length > 0;
         <div class="py-20 text-center">
           <h1 class="text-2xl font-bold mb-4">Photoshoot not found</h1>
           <p class="mb-8">The photoshoot you're looking for doesn't exist or has been removed.</p>
-          <a href="/photoshoots" class="inline-block py-2 px-4 bg-black dark:bg-white text-white dark:text-black font-medium">
+          <a href="/photoshoots" class="inline-block py-2 px-4 bg-black dark:bg-white text-white dark:text-black font-sans font-medium">
             Return to Photoshoots
           </a>
         </div>
@@ -164,9 +167,17 @@ const hasProducts = photoshoot?.products && photoshoot.products.length > 0;
 </MainLayout>
 
 <script>
-  // Add a small zoom effect on hover
+  // Define the openLightbox function on the window object for TypeScript
+  declare global {
+    interface Window {
+      openLightbox: (index: number) => void;
+    }
+  }
+
+  // Add a small zoom effect on hover and implement progressive loading
   document.addEventListener('DOMContentLoaded', () => {
-    const imageContainers = document.querySelectorAll('.cursor-pointer');
+    // Handle hover effects
+    const imageContainers = document.querySelectorAll('.gallery-item');
     imageContainers.forEach(container => {
       container.addEventListener('mouseenter', () => {
         container.classList.add('scale-[1.02]');
@@ -174,6 +185,45 @@ const hasProducts = photoshoot?.products && photoshoot.products.length > 0;
       container.addEventListener('mouseleave', () => {
         container.classList.remove('scale-[1.02]');
       });
+    });
+
+    // Implement Intersection Observer for lazy loading additional content
+    const observerOptions = {
+      root: null, // use viewport
+      rootMargin: '200px', // start loading before element comes into view
+      threshold: 0.1 // trigger when 10% of the element is visible
+    };
+
+    const handleIntersection = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // If it's an image container, load the high-quality version
+          const container = entry.target;
+          const img = container.querySelector('img');
+          
+          if (img) {
+            // Set a high-res version by updating data-src to src if it exists
+            const dataSrc = img.getAttribute('data-src');
+            if (dataSrc) {
+              img.src = dataSrc;
+            }
+            
+            // Add a loaded class for any post-load animations
+            container.classList.add('loaded');
+          }
+          
+          // Stop observing this element
+          observer.unobserve(container);
+        }
+      });
+    };
+
+    // Create and start the observer
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    
+    // Observe all gallery items
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      observer.observe(item);
     });
   });
 </script> 
