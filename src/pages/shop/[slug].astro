@@ -118,6 +118,7 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
                     <div 
                       class="overflow-hidden cursor-pointer border-2 border-transparent hover:border-electric-red transition-all duration-300"
                       data-index={index}
+                      data-image-url={getAssetUrl(image)}
                     >
                       <CloudinaryImage 
                         publicId={getAssetUrl(image)} 
@@ -236,31 +237,57 @@ const hasPhotoshoots = product?.photoshoots && product.photoshoots.length > 0;
 </MainLayout>
 
 <script>
+  // Define the openLightbox function on the window object for TypeScript
+  declare global {
+    interface Window {
+      openLightbox: (index: number) => void;
+    }
+  }
+
   // Handle thumbnail click to change main image
   document.addEventListener('DOMContentLoaded', () => {
     const thumbnails = document.querySelectorAll('#thumbnail-gallery > div');
     const mainImageContainer = document.getElementById('main-image-container');
-    const mainImage = mainImageContainer?.querySelector('img');
     
-    // Store the image URLs for easy access
-    const imageUrls: string[] = []; 
-    thumbnails.forEach((thumbnail, index) => {
-      const img = thumbnail.querySelector('img');
-      if (img && img.src) {
-        imageUrls[index] = img.src;
-      }
-      
+    thumbnails.forEach((thumbnail) => {
       // Add click event to change the main image
       thumbnail.addEventListener('click', (e) => {
         e.preventDefault();
-        const index = Number(thumbnail.getAttribute('data-index') || 0);
+        e.stopPropagation(); // Prevent lightbox from opening
         
-        if (mainImage && imageUrls[index]) {
-          mainImage.src = imageUrls[index];
+        const index = Number(thumbnail.getAttribute('data-index') || 0);
+        const imageUrl = thumbnail.getAttribute('data-image-url');
+        
+        if (mainImageContainer && imageUrl) {
+          // We need to replace the entire CloudinaryImage component
+          // First, get the current main image markup
+          const currentMainHtml = mainImageContainer.innerHTML;
           
-          // Update the onclick attribute for the lightbox
-          if (mainImageContainer) {
-            mainImageContainer.setAttribute('onclick', `window.openLightbox(${index})`);
+          // Clear the lightbox click handler temporarily
+          mainImageContainer.onclick = null;
+          
+          // Find the Cloudinary img element and update it with the new URL
+          const cloudinaryImg = mainImageContainer.querySelector('img');
+          if (cloudinaryImg) {
+            // Need to update all src attributes (actual src and data attributes)
+            cloudinaryImg.src = imageUrl;
+            cloudinaryImg.srcset = imageUrl;
+            
+            // Update data attributes that might control the image
+            const dataAttributes = Array.from(cloudinaryImg.attributes)
+              .filter(attr => attr.name.startsWith('data-'));
+            
+            dataAttributes.forEach(attr => {
+              if (attr.name.includes('src')) {
+                cloudinaryImg.setAttribute(attr.name, imageUrl);
+              }
+            });
+            
+            // Update the onclick attribute for the lightbox
+            setTimeout(() => {
+              mainImageContainer.setAttribute('onclick', `window.openLightbox(${index})`);
+              mainImageContainer.onclick = () => window.openLightbox(index);
+            }, 100);
           }
           
           // Highlight the selected thumbnail
