@@ -3,6 +3,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* System fonts and Impact for display */
+@font-face {
+  font-family: 'Impact';
+  src: local('Impact');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Font face declarations for Formula font */
 @font-face {
   font-family: 'Formula';
@@ -335,7 +344,7 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Formula', sans-serif;
+    font-family: 'Impact', sans-serif;
     @apply font-bold tracking-tight;
   }
   
@@ -545,28 +554,29 @@
   
   /* Custom font utility classes */
   .font-formula {
-    font-family: 'Formula', sans-serif;
+    font-family: 'Impact', sans-serif;
   }
   
   .font-formula-extended {
-    font-family: 'Formula', sans-serif;
-    font-variant: extended;
+    font-family: 'Impact', sans-serif;
   }
   
   .font-formula-condensed {
-    font-family: 'Formula', sans-serif;
-    font-variant: condensed;
+    font-family: 'Impact', sans-serif;
   }
   
   .font-formula-black {
-    font-family: 'Formula', sans-serif;
+    font-family: 'Impact', sans-serif;
     font-weight: 900;
   }
   
   .font-formula-condensed-black {
-    font-family: 'Formula', sans-serif;
-    font-variant: condensed;
+    font-family: 'Impact', sans-serif;
     font-weight: 900;
+  }
+  
+  .font-impact {
+    font-family: 'Impact', sans-serif;
   }
   
   .font-laica {

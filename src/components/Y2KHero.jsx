@@ -18,7 +18,7 @@ export function Y2KHero({ kepkaData }) {
           <div className="flex items-center mb-4 sm:mb-6">
             <div className="w-1 h-12 sm:h-16 bg-electric-red mr-3 sm:mr-4"></div>
             <div>
-              <h2 className="text-sm sm:text-base uppercase tracking-widest mb-1 font-formula font-bold">
+              <h2 className="text-sm sm:text-base uppercase tracking-widest mb-1 font-impact font-bold">
                 Fashion Designer
               </h2>
               <p className="text-xs sm:text-sm opacity-75 font-serif">
@@ -27,20 +27,20 @@ export function Y2KHero({ kepkaData }) {
             </div>
           </div>
 
-          <h1 className="text-[8rem] sm:text-[10rem] md:text-[11rem] lg:text-[12rem] leading-[0.85] font-formula-condensed-black tracking-tight mb-8 md:mb-12">
+          <h1 className="text-[8rem] sm:text-[10rem] md:text-[11rem] lg:text-[12rem] leading-[0.85] font-impact tracking-tight mb-8 md:mb-12">
             JAKUB KĘPKA
           </h1>
           
           <div className="flex gap-4 sm:gap-6">
             <a 
               href="/shop" 
-              className="px-6 sm:px-8 py-3 border-2 border-white text-center font-bold uppercase tracking-wide bg-transparent transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white"
+              className="px-6 sm:px-8 py-3 border-2 border-white text-center font-sans font-semibold uppercase tracking-wide bg-transparent transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white"
             >
               Shop My Designs
             </a>
             <a 
               href="/about" 
-              className="px-6 sm:px-8 py-3 text-center font-bold uppercase tracking-wide bg-white text-black border-2 border-white transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white"
+              className="px-6 sm:px-8 py-3 text-center font-sans font-semibold uppercase tracking-wide bg-white text-black border-2 border-white transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white"
             >
               About Me
             </a>
@@ -71,7 +71,7 @@ export function Y2KHero({ kepkaData }) {
           <div className="flex items-center mb-4 sm:mb-6">
             <div className="w-1 h-10 sm:h-12 bg-electric-red mr-3"></div>
             <div>
-              <h2 className="text-xs sm:text-sm uppercase tracking-widest mb-0.5 font-formula font-bold">
+              <h2 className="text-xs sm:text-sm uppercase tracking-widest mb-0.5 font-impact font-bold">
                 Fashion Designer
               </h2>
               <p className="text-xs opacity-75 font-serif">
@@ -80,20 +80,20 @@ export function Y2KHero({ kepkaData }) {
             </div>
           </div>
 
-          <h1 className="text-[4.5rem] sm:text-[7rem] leading-[0.85] font-formula-condensed-black text-center tracking-tight mb-5 sm:mb-6">
+          <h1 className="text-[4.5rem] sm:text-[7rem] leading-[0.85] font-impact text-center tracking-tight mb-5 sm:mb-6">
             JAKUB KĘPKA
           </h1>
           
           <div className="flex flex-col gap-3 sm:gap-4 w-full mb-4">
             <a 
               href="/shop" 
-              className="px-6 py-3 border-2 border-white text-center font-bold uppercase tracking-wide bg-transparent transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white active:bg-electric-red active:border-electric-red active:text-white"
+              className="px-6 py-3 border-2 border-white text-center font-sans font-semibold uppercase tracking-wide bg-transparent transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white active:bg-electric-red active:border-electric-red active:text-white"
             >
               Shop My Designs
             </a>
             <a 
               href="/about" 
-              className="px-6 py-3 text-center font-bold uppercase tracking-wide bg-white text-black border-2 border-white transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white active:bg-electric-red active:border-electric-red active:text-white"
+              className="px-6 py-3 text-center font-sans font-semibold uppercase tracking-wide bg-white text-black border-2 border-white transition-colors duration-300 hover:bg-electric-red hover:border-electric-red hover:text-white active:bg-electric-red active:border-electric-red active:text-white"
             >
               About Me
             </a>
